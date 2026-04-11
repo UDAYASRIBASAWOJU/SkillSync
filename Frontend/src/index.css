@@ -6,29 +6,23 @@
 /* ─── Tailwind v4 Theme Configuration ─── */
 @theme {
   /* Colors */
-  --color-primary: #FFB7B2;
-  --color-primary-container: #FFDAC1;
-  --color-on-primary: #5A3B39;
-  
-  --color-surface: #C7CEEA;
+  --color-primary: #004ac6;
+  --color-primary-container: #2563eb;
+  --color-on-primary: #ffffff;
+  --color-surface: #f7f9fb;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f9f9fa;
-  --color-surface-container: #f0f2f7;
-  --color-surface-container-high: #e6ecf4;
-  --color-surface-container-highest: #dce2ef;
-  
-  --color-on-surface: #4A4A4A;
-  --color-on-surface-variant: #888888;
-  
-  --color-secondary-container: #F2F0C8;
-  --color-on-secondary-container: #6d6b41;
-  
-  --color-outline: #b0bdde;
-  --color-outline-variant: #dce2ef;
-  
-  --color-secondary: #FFDAC1;
+  --color-surface-container-low: #f2f4f6;
+  --color-surface-container: #eceef0;
+  --color-surface-container-high: #e6e8ea;
+  --color-surface-container-highest: #e0e3e5;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #434655;
+  --color-secondary-container: #acbfff;
+  --color-on-secondary-container: #394c84;
+  --color-outline: #737686;
+  --color-outline-variant: #c3c6d7;
+  --color-secondary: #495c95;
   --color-error: #ba1a1a;
-  --color-success: #B5EAD7;
 
   /* Font Family */
   --font-sans: 'Inter', sans-serif;
@@ -41,10 +35,17 @@
 }
 
 :root {
-  --gradient-btn-start: #FFB7B2;
-  --gradient-btn-end: #FFDAC1;
-  --app-bg-glow-a: rgba(255, 183, 178, 0.4);
-  --app-bg-glow-b: rgba(242, 240, 200, 0.4);
+  --gradient-btn-start: #004ac6;
+  --gradient-btn-end: #2563eb;
+  --app-bg-glow-a: rgba(37, 99, 235, 0.14);
+  --app-bg-glow-b: rgba(0, 167, 183, 0.1);
+  
+  /* User Requested Pastel Theme */
+  --pastel-pink: #FFB7B2;
+  --pastel-peach: #FFDAC1;
+  --pastel-yellow: #F2F0C8;
+  --pastel-green: #B5EAD7;
+  --pastel-purple: #C7CEEA;
 }
 
 html.theme-dark {

@@ -1,18 +1,19 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
+import type { RootState } from '../../store';
 import api from '../../services/axios';
 import logo from '../../assets/skillsync-logo.png';
+
 interface SidebarProps {
   role: 'ROLE_LEARNER' | 'ROLE_MENTOR' | 'ROLE_ADMIN';
-  isOpen: boolean;
-  onToggle: () => void;
 }
 
-const Sidebar = ({ role, isOpen, onToggle }: SidebarProps) => {
+const Sidebar = ({ role }: SidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const sidebarOpen = useSelector((state: RootState) => state.ui.sidebarOpen);
 
   const learnerNav = [
     { name: 'Dashboard', icon: 'grid_view', path: '/learner' }, 
@@ -53,76 +54,62 @@ const Sidebar = ({ role, isOpen, onToggle }: SidebarProps) => {
   };
 
   return (
-    <aside className={`fixed left-0 top-0 h-screen bg-[#C7CEEA] border-r border-[#FFDAC1]/50 flex flex-col justify-between z-40 transition-all duration-300 shadow-sm ${isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
-      <div className="flex flex-col flex-1 overflow-y-auto w-full scrollbar-hide pt-4">
-
-        {/* TOP BRANDING & TOGGLE */}
-        <div className={`flex items-center h-16 shrink-0 mb-4 px-4 ${isOpen ? 'justify-between' : 'justify-center'}`}>
-          <div className={`flex items-center gap-2 overflow-hidden transition-all duration-300 ${isOpen ? 'w-auto opacity-100' : 'w-0 opacity-0 hidden'}`}>
-            <img src={logo} alt="SkillSync logo" className="w-8 h-8 object-contain shrink-0" />
-            <span className="text-xl font-black text-white tracking-tight">SkillSync</span>
+    <aside className={`fixed left-0 top-0 h-screen bg-[var(--pastel-green)]/95 border-r border-[#B5EAD7] flex flex-col justify-between z-40 transition-all duration-300 shadow-sm backdrop-blur-xl ${sidebarOpen ? 'w-20 lg:w-64 translate-x-0' : 'w-0 -translate-x-full lg:w-0 overflow-hidden'}`}>
+      <div className="flex flex-col flex-1 overflow-y-auto w-full scrollbar-hide">
+        {/* LOGO SECTION */}
+        <div className="flex items-center justify-center lg:justify-start lg:px-6 h-20 shrink-0 border-b border-[#B5EAD7]/30">
+          <img src={logo} alt="SkillSync logo" className="w-10 h-10 object-contain hover:scale-105 transition duration-300" onError={(e: any) => { e.target.src = 'https://via.placeholder.com/40'; }} />
+          <div className="hidden lg:flex flex-col ml-3">
+            <span className="text-lg font-black text-[#191c1e] tracking-tight leading-tight">SkillSync</span>
+            <span className="text-[10px] font-bold text-[#434655] uppercase tracking-widest">{role.replace('ROLE_', '')}</span>
           </div>
-          
-          <button onClick={onToggle} className="p-2 rounded-xl text-white hover:bg-white/20 transition-colors focus:outline-none shrink-0" title="Toggle Sidebar">
-            <span className="material-symbols-outlined text-[28px] leading-none">{isOpen ? 'menu_open' : 'menu'}</span>
-          </button>
         </div>
-
-        {/* NAVIGATION LIKS */}
-        <nav className="flex-1 w-full px-2 py-4 space-y-2">
+ 
+        {/* NAVIGATION LINKS */}
+        <nav className="flex-1 w-full px-2 lg:px-4 py-8 space-y-2">
           {activeNav.map((item) => {
             const isActive = location.pathname === item.path;
-            const linkClasses = `flex items-center justify-center ${isOpen ? 'lg:justify-start' : ''} px-2 h-12 rounded-2xl transition-all duration-200 group ${
+            const linkClasses = `flex items-center justify-center lg:justify-start px-2 lg:px-4 py-3 rounded-xl transition-all duration-200 group ${
               isActive 
-                ? 'bg-[#FFDAC1] text-[#A66C68] shadow-sm font-extrabold' 
-                : 'text-[#888888] hover:bg-[#F2F0C8]/50 hover:text-[#5A5A5A] font-semibold'
+                ? 'bg-[var(--pastel-purple)] text-[#191c1e] shadow-sm font-extrabold' 
+                : 'text-[#434655] hover:bg-[var(--pastel-peach)]/50 hover:text-[#191c1e] font-semibold'
             }`;
-
+ 
             return (
-              <Link key={item.name} to={item.path} className={linkClasses} title={!isOpen ? item.name : undefined}>
-                <span className={`material-symbols-outlined text-[26px] transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'} ${isOpen ? 'ml-2' : ''}`}>
+              <Link key={item.name} to={item.path} className={linkClasses}>
+                <span className={`material-symbols-outlined text-2xl transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
                   {item.icon}
                 </span>
-                <span className={`whitespace-nowrap transition-all duration-300 overflow-hidden ${isOpen ? 'opacity-100 ml-4 max-w-[200px]' : 'opacity-0 max-w-0 ml-0 hidden lg:block'}`}>
-                  {item.name}
-                </span>
+                <span className="hidden lg:inline ml-4 text-sm whitespace-nowrap">{item.name}</span>
               </Link>
             );
           })}
         </nav>
       </div>
-
+ 
       {/* BOTTOM SECTION */}
-      <div className="w-full shrink-0 p-2 border-t border-[#FFDAC1]/50 flex flex-col gap-2 bg-[#FFDAC1]/10">
+      <div className="w-full shrink-0 p-2 lg:p-4 border-t border-[#B5EAD7]/30 flex flex-col gap-2">
         {role === 'ROLE_LEARNER' && (
           <button 
             onClick={() => navigate('/mentors')}
-            className={`w-full flex items-center justify-center h-12 bg-[#FFB7B2] text-white rounded-2xl shadow-sm hover:focus:ring-2 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ${!isOpen ? 'px-0' : 'px-4'}`}
-            title="Find a Mentor"
+            className="w-full flex items-center justify-center h-12 bg-[var(--pastel-pink)] text-[#191c1e] rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 font-bold"
           >
-            <span className="material-symbols-outlined text-[26px]">search</span>
-            <span className={`font-bold whitespace-nowrap transition-all duration-300 overflow-hidden ${isOpen ? 'opacity-100 ml-2 max-w-[200px]' : 'opacity-0 max-w-0 ml-0 hidden lg:block'}`}>
-              Find a Mentor
-            </span>
+            <span className="material-symbols-outlined text-xl">search</span>
+            <span className="hidden lg:inline ml-2 text-sm whitespace-nowrap">Find a Mentor</span>
           </button>
         )}
-
-        <Link to="/help" className={`flex items-center justify-center ${isOpen ? 'lg:justify-start' : ''} px-2 h-12 rounded-2xl text-[#888888] hover:bg-[#F2F0C8]/50 hover:text-[#5A5A5A] transition-all duration-200 group`} title="Help Center">
-          <span className={`material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform ${isOpen ? 'ml-2' : ''}`}>help</span>
-          <span className={`font-semibold whitespace-nowrap transition-all duration-300 overflow-hidden ${isOpen ? 'opacity-100 ml-4 max-w-[200px]' : 'opacity-0 max-w-0 ml-0 hidden lg:block'}`}>
-            Help Center
-          </span>
+ 
+        <Link to="/help" className="w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 h-12 rounded-xl text-[#434655] hover:bg-[var(--pastel-peach)]/50 hover:text-[#191c1e] transition-all duration-200 group">
+          <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">help</span>
+          <span className="hidden lg:inline ml-4 text-sm font-semibold whitespace-nowrap">Help Center</span>
         </Link>
-
+ 
         <button 
           onClick={handleLogout}
-          className={`w-full flex items-center justify-center ${isOpen ? 'lg:justify-start' : ''} px-2 h-12 rounded-2xl text-[#FFB7B2] hover:bg-[#FFB7B2]/10 transition-all duration-200 group`}
-          title="Logout"
+          className="w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 h-12 rounded-xl text-[#ba1a1a] hover:bg-[#ba1a1a]/10 transition-all duration-200 group"
         >
-          <span className={`material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform ${isOpen ? 'ml-2' : ''}`}>logout</span>
-          <span className={`font-semibold whitespace-nowrap transition-all duration-300 overflow-hidden ${isOpen ? 'opacity-100 ml-4 max-w-[200px]' : 'opacity-0 max-w-0 ml-0 hidden lg:block'}`}>
-            Logout
-          </span>
+          <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">logout</span>
+          <span className="hidden lg:inline ml-4 text-sm font-semibold whitespace-nowrap">Logout</span>
         </button>
       </div>
     </aside>
