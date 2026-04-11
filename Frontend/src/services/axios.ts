@@ -39,11 +39,11 @@ api.interceptors.request.use((config) => {
 
 // RESPONSE INTERCEPTOR — handle 401 with silent token refresh + retry
 let isRefreshing = false;
-let failedQueue: Array<{ resolve: () => void; reject: (err: any) => void }> = [];
+let failedQueue: Array<{ resolve: () => void; reject: (err: unknown) => void }> = [];
 
 const isInvalidSessionStatus = (status?: number): boolean => status === 401 || status === 403;
 
-const processQueue = (error: any) => {
+const processQueue = (error: unknown) => {
   failedQueue.forEach(({ resolve, reject }) => {
     if (error) reject(error);
     else resolve();
@@ -90,7 +90,7 @@ api.interceptors.response.use(
           {
             _skipErrorRedirect: true,
             _skipAuthRedirect: true,
-          } as any,
+          } as unknown as Record<string, unknown>,
         );
 
         const refreshed = refreshResponse?.data;
@@ -115,7 +115,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
-        const refreshStatus = (refreshError as any)?.response?.status;
+        const refreshStatus = (refreshError as { response?: { status?: number } })?.response?.status;
 
         // Only force logout when the refresh token is definitely invalid/expired.
         if (isInvalidSessionStatus(refreshStatus)) {
@@ -124,7 +124,7 @@ api.interceptors.response.use(
             const meResponse = await api.get('/api/auth/me', {
               _skipErrorRedirect: true,
               _skipAuthRedirect: true,
-            } as any);
+            } as unknown as Record<string, unknown>);
 
             if (meResponse?.data) {
               const currentRefreshToken = store.getState().auth.refreshToken;
