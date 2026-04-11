@@ -2,24 +2,36 @@ import axios from 'axios';
 import { store } from '../store';
 import { logout, setCredentials } from '../store/slices/authSlice';
 
-// Strongly force HTTPS in production to prevent Vercel ENV leaks pointing to raw IPs.
-const isProd = import.meta.env.PROD;
-let configuredUrl = import.meta.env.VITE_API_URL;
+// Dynamically detect the correct API domain based on the frontend domain.
+// This allows both domains (skillsync.mraks.dev and skillsync.udayasri.dev)
+// to use the same built code while avoiding third-party cookie blocking issues.
+const getApiBaseUrl = () => {
+  const isProd = import.meta.env.PROD;
+  if (!isProd) return import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
-// Correct legacy or raw IP configurations inside production builds automatically.
-if (isProd && configuredUrl && configuredUrl.includes('35.153.59.2')) {
-    configuredUrl = 'https://api.skillsync.udayasri.dev';
-}
+  let currentHost = '';
+  if (typeof window !== 'undefined') {
+    currentHost = window.location.hostname;
+  }
 
-// CRITICAL: If configuredUrl points to the frontend domain (skillsync.udayasri.dev, Vercel),
-// redirect to the actual API domain (api.skillsync.udayasri.dev, EC2). This handles
-// misconfigured VITE_API_URL in Vercel deployment settings.
-if (isProd && configuredUrl && new URL(configuredUrl).hostname === 'skillsync.udayasri.dev') {
-    console.warn('[CORS FIX] Detected misconfigured API URL pointing to frontend domain. Redirecting to API Gateway...');
-    configuredUrl = 'https://api.skillsync.udayasri.dev';
-}
+  // DYNAMIC MAPPING:
+  // skillsync.udayasri.dev -> api.skillsync.udayasri.dev
+  // skillsync.mraks.dev -> api.skillsync.mraks.dev
+  if (currentHost.includes('skillsync.udayasri.dev')) {
+    return 'https://api.skillsync.udayasri.dev';
+  } else if (currentHost.includes('skillsync.mraks.dev')) {
+    return 'https://api.skillsync.mraks.dev';
+  }
 
-export const API_BASE_URL = configuredUrl || (isProd ? 'https://api.skillsync.udayasri.dev' : 'http://localhost:8080');
+  // Fallback to Vercel env var if neither domain matched
+  let fallbackUrl = import.meta.env.VITE_API_URL;
+  if (fallbackUrl && fallbackUrl.includes('35.153.59.2')) {
+    return 'https://api.skillsync.udayasri.dev';
+  }
+  return fallbackUrl || 'https://api.skillsync.udayasri.dev';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,

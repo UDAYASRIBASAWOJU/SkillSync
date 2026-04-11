@@ -23,12 +23,17 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class NotificationServiceTest {
 
-    @Mock private NotificationRepository notificationRepository;
-    @Mock private WebSocketService webSocketService;
-    @Mock private CacheService cacheService;
+    @Mock
+    private NotificationRepository notificationRepository;
+    @Mock
+    private WebSocketService webSocketService;
+    @Mock
+    private CacheService cacheService;
 
-    @InjectMocks private NotificationCommandService notificationCommandService;
-    @InjectMocks private NotificationQueryService notificationQueryService;
+    @InjectMocks
+    private NotificationCommandService notificationCommandService;
+    @InjectMocks
+    private NotificationQueryService notificationQueryService;
 
     private Notification testNotification;
 
@@ -44,7 +49,8 @@ class NotificationServiceTest {
     void createAndPush_shouldSaveAndInvalidateCache() {
         when(notificationRepository.save(any(Notification.class))).thenReturn(testNotification);
 
-        Notification result = notificationCommandService.createAndPush(100L, "SESSION", "New Session", "You have a new session request");
+        Notification result = notificationCommandService.createAndPush(100L, "SESSION", "New Session",
+                "You have a new session request");
 
         assertNotNull(result);
         assertEquals("SESSION", result.getType());
@@ -105,7 +111,7 @@ class NotificationServiceTest {
     @DisplayName("Delete notification - invalidates cache")
     void deleteNotification_shouldCallRepositoryAndInvalidateCache() {
         when(notificationRepository.findById(1L)).thenReturn(Optional.of(testNotification));
-        notificationCommandService.deleteNotification(1L);
+        notificationCommandService.deleteNotification(1L, 3L);
         verify(notificationRepository).deleteById(1L);
         verify(cacheService).evict(CacheService.vKey("notification:unread:100"));
     }
