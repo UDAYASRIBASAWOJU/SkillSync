@@ -11,7 +11,6 @@ import logo from '../../assets/skillsync-logo.png';
 
 const Navbar = () => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const sidebarOpen = useSelector((state: RootState) => state.ui.sidebarOpen);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
@@ -52,22 +51,26 @@ const Navbar = () => {
   const colorIndex = (initial1.charCodeAt(0) % colors.length);
   const avatarClass = colors[colorIndex] || 'bg-primary';
 
+  const role = useSelector((state: RootState) => state.auth.role);
+  const roleLabel = role?.replace('ROLE_', '') || 'LEARNER';
+
   return (
-    <header className="h-16 w-full glass-nav bg-[var(--pastel-yellow)]/80 border-b border-[var(--pastel-peach)] flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0 transition-all">
+    <header className="h-16 w-full glass-nav bg-[var(--navbar-bg)]/80 border-b border-[var(--sidebar-border)] flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0 transition-all">
       <div className="flex-1 flex items-center gap-4">
         <button 
           onClick={() => dispatch(toggleSidebar())}
-          className="p-2 rounded-lg hover:bg-[var(--pastel-peach)]/50 text-[#191c1e] transition-colors"
+          className="p-2 rounded-lg hover:bg-black/5 text-[var(--sidebar-text)] transition-colors"
           aria-label="Toggle Sidebar"
         >
           <span className="material-symbols-outlined text-2xl">menu</span>
         </button>
-        {!sidebarOpen && (
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="SkillSync logo" className="w-8 h-8 object-contain" onError={(e: any) => { e.target.src = 'https://via.placeholder.com/32'; }} />
-            <span className="text-lg font-black text-[#191c1e] tracking-tight">SkillSync</span>
-          </Link>
-        )}
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt="SkillSync logo" className="w-8 h-8 object-contain" onError={(e: any) => { e.target.src = 'https://via.placeholder.com/32'; }} />
+          <div className="flex flex-col">
+            <span className="text-lg font-black text-[var(--sidebar-text)] tracking-tight leading-tight">SkillSync</span>
+            <span className="text-[10px] font-bold text-[var(--sidebar-text-muted)] uppercase tracking-widest">{roleLabel}</span>
+          </div>
+        </Link>
       </div>
 
       <div className="flex items-center space-x-4 text-[#191c1e]">

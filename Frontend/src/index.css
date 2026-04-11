@@ -46,6 +46,14 @@
   --pastel-yellow: #F2F0C8;
   --pastel-green: #B5EAD7;
   --pastel-purple: #C7CEEA;
+
+  /* Sidebar Theme Variables (Light) */
+  --sidebar-bg: #FFB7B2;
+  --sidebar-border: rgba(25, 28, 30, 0.08);
+  --sidebar-text: #191c1e;
+  --sidebar-text-muted: rgba(25, 28, 30, 0.6);
+  --sidebar-active-bg: #F2F0C8;
+  --navbar-bg: #F2F0C8;
 }
 
 html.theme-dark {
@@ -71,6 +79,14 @@ html.theme-dark {
   --gradient-btn-end: #2bc2d5;
   --app-bg-glow-a: rgba(83, 117, 255, 0.28);
   --app-bg-glow-b: rgba(44, 194, 213, 0.18);
+
+  /* Sidebar Theme Variables (Dark) */
+  --sidebar-bg: #111a2a;
+  --sidebar-border: rgba(174, 187, 208, 0.1);
+  --sidebar-text: #e6edf7;
+  --sidebar-text-muted: rgba(230, 237, 247, 0.7);
+  --sidebar-active-bg: #1b2940;
+  --navbar-bg: #111a2a;
 }
 
 /* ─── Base Styles ─── */

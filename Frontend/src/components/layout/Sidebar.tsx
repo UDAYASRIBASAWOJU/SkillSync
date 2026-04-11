@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 import type { RootState } from '../../store';
 import api from '../../services/axios';
-import logo from '../../assets/skillsync-logo.png';
 
 interface SidebarProps {
   role: 'ROLE_LEARNER' | 'ROLE_MENTOR' | 'ROLE_ADMIN';
@@ -54,16 +53,10 @@ const Sidebar = ({ role }: SidebarProps) => {
   };
 
   return (
-    <aside className={`fixed left-0 top-0 h-screen bg-[#FFB7B2] border-r border-[#FFB7B2]/50 flex flex-col justify-between z-40 transition-all duration-300 shadow-sm ${sidebarOpen ? 'w-20 lg:w-64 translate-x-0' : 'w-0 -translate-x-full lg:w-0 overflow-hidden'}`}>
+    <aside className={`fixed left-0 top-0 h-screen bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] flex flex-col justify-between z-40 transition-all duration-300 shadow-xl ${sidebarOpen ? 'w-20 lg:w-64 translate-x-0' : 'w-0 -translate-x-full lg:w-0 overflow-hidden'}`}>
       <div className="flex flex-col flex-1 overflow-y-auto w-full scrollbar-hide">
-        {/* LOGO SECTION */}
-        <div className="flex items-center justify-center lg:justify-start lg:px-6 h-20 shrink-0 border-b border-[#191c1e]/10">
-          <img src={logo} alt="SkillSync logo" className="w-10 h-10 object-contain hover:scale-105 transition duration-300" onError={(e: any) => { e.target.src = 'https://via.placeholder.com/40'; }} />
-          <div className="hidden lg:flex flex-col ml-3">
-            <span className="text-lg font-black text-[#191c1e] tracking-tight leading-tight">SkillSync</span>
-            <span className="text-[11px] font-bold text-[#191c1e]/70 uppercase tracking-widest">{role.replace('ROLE_', '')}</span>
-          </div>
-        </div>
+        {/* Empty space for Navbar alignment */}
+        <div className="h-16 shrink-0 border-b border-black/5" />
  
         {/* NAVIGATION LINKS */}
         <nav className="flex-1 w-full px-2 lg:px-4 py-8 space-y-2">
@@ -71,8 +64,8 @@ const Sidebar = ({ role }: SidebarProps) => {
             const isActive = location.pathname === item.path;
             const linkClasses = `flex items-center justify-center lg:justify-start px-2 lg:px-4 py-3 rounded-xl transition-all duration-200 group ${
               isActive 
-                ? 'bg-[#F2F0C8] text-[#191c1e] shadow-sm font-extrabold' 
-                : 'text-[#191c1e]/70 hover:bg-[#F2F0C8]/40 hover:text-[#191c1e] font-semibold'
+                ? 'bg-[var(--sidebar-active-bg)] text-[var(--sidebar-text)] shadow-sm font-extrabold' 
+                : 'text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] font-semibold'
             }`;
  
             return (
@@ -88,7 +81,7 @@ const Sidebar = ({ role }: SidebarProps) => {
       </div>
  
       {/* BOTTOM SECTION */}
-      <div className="w-full shrink-0 p-2 lg:p-4 border-t border-[#191c1e]/10 flex flex-col gap-2">
+      <div className="w-full shrink-0 p-2 lg:p-4 border-t border-[var(--sidebar-border)] flex flex-col gap-2">
         {role === 'ROLE_LEARNER' && (
           <button 
             onClick={() => navigate('/mentors')}
@@ -99,7 +92,7 @@ const Sidebar = ({ role }: SidebarProps) => {
           </button>
         )}
  
-        <Link to="/help" className="w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 h-12 rounded-xl text-[#191c1e]/70 hover:bg-[#F2F0C8]/40 hover:text-[#191c1e] transition-all duration-200 group">
+        <Link to="/help" className="w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 h-12 rounded-xl text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] transition-all duration-200 group">
           <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">help</span>
           <span className="hidden lg:inline ml-4 text-sm font-semibold whitespace-nowrap">Help Center</span>
         </Link>
