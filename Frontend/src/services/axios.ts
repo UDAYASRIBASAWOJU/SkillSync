@@ -8,15 +8,15 @@ let configuredUrl = import.meta.env.VITE_API_URL;
 
 // Correct legacy or raw IP configurations inside production builds automatically.
 if (isProd && configuredUrl && configuredUrl.includes('35.153.59.2')) {
-    configuredUrl = 'https://api.skillsync.mraks.dev';
+  configuredUrl = 'https://api.skillsync.mraks.dev';
 }
 
 // CRITICAL: If configuredUrl points to the frontend domain (skillsync.mraks.dev, Vercel),
 // redirect to the actual API domain (api.skillsync.mraks.dev, EC2). This handles
 // misconfigured VITE_API_URL in Vercel deployment settings.
 if (isProd && configuredUrl && new URL(configuredUrl).hostname === 'skillsync.mraks.dev') {
-    console.warn('[CORS FIX] Detected misconfigured API URL pointing to frontend domain. Redirecting to API Gateway...');
-    configuredUrl = 'https://api.skillsync.mraks.dev';
+  console.warn('[CORS FIX] Detected misconfigured API URL pointing to frontend domain. Redirecting to API Gateway...');
+  configuredUrl = 'https://api.skillsync.mraks.dev';
 }
 
 export const API_BASE_URL = configuredUrl || (isProd ? 'https://api.skillsync.mraks.dev' : 'http://localhost:8080');
@@ -27,9 +27,13 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// REQUEST INTERCEPTOR — we no longer manually attach the token.
-// The browser will automatically send the HttpOnly 'accessToken' cookie.
+// REQUEST INTERCEPTOR — Manually attach token to overcome cross-domain cookie issues.
+// We attach the store's token so that Alternate domains can successfully authenticate.
 api.interceptors.request.use((config) => {
+  const token = store.getState().auth?.accessToken;
+  if (token && !config.headers.Authorization) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 
@@ -103,7 +107,7 @@ api.interceptors.response.use(
         // Refresh was successful. Tokens are cookie-based, so queued requests
         // should be replayed without forcing an Authorization header.
         processQueue(null);
-        
+
         // Re-run original request without altering authorization header
         if (originalRequest.headers) {
           delete originalRequest.headers.Authorization;
