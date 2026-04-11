@@ -55,10 +55,10 @@ const Navbar = () => {
         <div className="w-20 lg:w-64 shrink-0 transition-all transform -translate-x-4 lg:-translate-x-8" />
       </div>
 
-      <div className="flex items-center space-x-4 text-[#191c1e]">
+      <div className="flex items-center space-x-4 text-on-surface">
         <ThemeToggleButton className="px-2.5 py-1.5" showLabel={false} />
 
-        <Link to="/notifications" className="relative p-2 rounded-full flex hover:bg-[var(--pastel-peach)]/50 transition-all duration-200">
+        <Link to="/notifications" className="relative p-2 rounded-full flex hover:bg-on-surface/10 transition-all duration-200">
           <span className="material-symbols-outlined text-[26px]">notifications</span>
           {unreadCount > 0 && (
             <span className="absolute top-1 right-2 min-w-[18px] h-[18px] bg-error text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 shadow-sm animate-pulse-slow">
