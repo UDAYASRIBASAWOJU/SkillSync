@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import logo from '../assets/skillsync-logo.png';
 import './PptLandingPage.css';
 import ThemeToggleButton from '../components/ui/ThemeToggleButton';
 
-const DEFAULT_BACKEND_BASE_URL = 'https://api.skillsync.udayasri.dev';
+const DEFAULT_BACKEND_BASE_URL = 'https://api.skillsync.mraks.dev';
 const DEFAULT_SWAGGER_PATH = '/swagger-ui/index.html';
 const DEFAULT_EUREKA_PATH = '/eureka-ui/';
 const DEFAULT_SONAR_URL = 'https://sonarcloud.io/organizations/skillsync-github/projects';

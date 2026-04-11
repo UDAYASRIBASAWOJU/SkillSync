@@ -596,7 +596,7 @@
       <p>The project has two big parts:</p>
       <div class="grid-2">
         <div class="card"><h4>🖥 Backend (the brain)</h4><p>Built with <strong>Java + Spring Boot</strong>. This is the server — it stores data in a database, handles payments, sends emails, etc. Think of it as the kitchen in a restaurant — users never see it, but it does all the real work.</p></div>
-        <div class="card"><h4>🎨 Frontend (the face)</h4><p>Built with <strong>React + TypeScript + Tailwind CSS</strong>. This is what users see and click on — buttons, forms, pages. Think of it as the dining area of a restaurant. It's hosted on <strong>Vercel</strong> (a free hosting service) and talks to the backend at <code>api.skillsync.udayasri.dev</code>.</p></div>
+        <div class="card"><h4>🎨 Frontend (the face)</h4><p>Built with <strong>React + TypeScript + Tailwind CSS</strong>. This is what users see and click on — buttons, forms, pages. Think of it as the dining area of a restaurant. It's hosted on <strong>Vercel</strong> (a free hosting service) and talks to the backend at <code>api.skillsync.mraks.dev</code>.</p></div>
       </div>
     </div>
   </div>
@@ -693,7 +693,7 @@
       <span class="subtopic-arrow">▶</span>
     </div>
     <div class="subtopic-body">
-      <p>When a user opens <code>skillsync.udayasri.dev</code> in their browser, the app starts up like a car engine — things happen in a specific order. Let's walk through each step:</p>
+      <p>When a user opens <code>skillsync.mraks.dev</code> in their browser, the app starts up like a car engine — things happen in a specific order. Let's walk through each step:</p>
       <div class="callout info"><span class="callout-icon">🎁</span><div><strong>What are "Providers"?</strong> A Provider is like a gift wrapper. It wraps around the entire app and gives every page inside it access to something useful. For example, <code>ThemeProvider</code> gives every page access to the dark/light theme. Without the wrapper, pages wouldn't know which theme to use. Think of it like electricity in a house — the main power supply (Provider) wraps the whole house so every room can use electricity.</div></div>
       <div class="diagram-box">
         <div class="flow" style="flex-direction:column; gap:4px; align-items:flex-start">
@@ -922,7 +922,7 @@
       <div class="code-block">
         <div class="code-label"><span class="dot1"></span><span class="dot2"></span><span class="dot3"></span> services/axios.ts — The central Axios instance</div>
         <pre><span class="kw">const</span> api = <span class="fn">axios.create</span>({
-  baseURL: API_BASE_URL,      <span class="cmt">// 'https://api.skillsync.udayasri.dev'</span>
+  baseURL: API_BASE_URL,      <span class="cmt">// 'https://api.skillsync.mraks.dev'</span>
   withCredentials: <span class="num">true</span>,    <span class="cmt">// ← CRITICAL: sends HttpOnly cookies automatically</span>
   headers: { <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span> },
 });</pre>
@@ -1107,18 +1107,18 @@ mentorService.<span class="fn">getMentors</span>({ skill: <span class="str">'Rea
         <div class="code-label"><span class="dot1"></span><span class="dot2"></span><span class="dot3"></span> Production URL safety logic</div>
         <pre><span class="cmt">// Fix 1: Raw EC2 IP in production → use proper domain</span>
 <span class="kw">if</span> (isProd && configuredUrl.<span class="fn">includes</span>(<span class="str">'35.153.59.2'</span>)) {
-  configuredUrl = <span class="str">'https://api.skillsync.udayasri.dev'</span>;
+  configuredUrl = <span class="str">'https://api.skillsync.mraks.dev'</span>;
 }
 
 <span class="cmt">// Fix 2: Vercel env pointed to frontend domain → redirect to API</span>
-<span class="kw">if</span> (isProd && <span class="kw">new</span> <span class="fn">URL</span>(configuredUrl).<span class="op">hostname</span> === <span class="str">'skillsync.udayasri.dev'</span>) {
+<span class="kw">if</span> (isProd && <span class="kw">new</span> <span class="fn">URL</span>(configuredUrl).<span class="op">hostname</span> === <span class="str">'skillsync.mraks.dev'</span>) {
   console.<span class="fn">warn</span>(<span class="str">'[CORS FIX] Misconfigured URL...'</span>);
-  configuredUrl = <span class="str">'https://api.skillsync.udayasri.dev'</span>;
+  configuredUrl = <span class="str">'https://api.skillsync.mraks.dev'</span>;
 }
 
 <span class="cmt">// Final: dev uses localhost, prod uses API domain</span>
 <span class="kw">const</span> API_BASE_URL = configuredUrl 
-  || (isProd ? <span class="str">'https://api.skillsync.udayasri.dev'</span> : <span class="str">'http://localhost:8080'</span>);</pre>
+  || (isProd ? <span class="str">'https://api.skillsync.mraks.dev'</span> : <span class="str">'http://localhost:8080'</span>);</pre>
       </div>
     </div>
   </div>
@@ -1403,7 +1403,7 @@ mentorService.<span class="fn">getMentors</span>({ skill: <span class="str">'Rea
 
 <span class="cmt">// If IP address slips through in prod, force HTTPS domain</span>
 <span class="kw">if</span> (isProd && configuredUrl.<span class="fn">includes</span>(<span class="str">'35.153.59.2'</span>)) {
-  configuredUrl = <span class="str">'https://api.skillsync.udayasri.dev'</span>;
+  configuredUrl = <span class="str">'https://api.skillsync.mraks.dev'</span>;
 }</pre>
       </div>
       <p>HttpOnly cookies are also marked <code>Secure</code> on the backend — meaning the browser will never send them over HTTP. Your frontend on Vercel is HTTPS-only.</p>
@@ -1436,7 +1436,7 @@ mentorService.<span class="fn">getMentors</span>({ skill: <span class="str">'Rea
       <div class="code-block">
         <div class="code-label"><span class="dot1"></span><span class="dot2"></span><span class="dot3"></span>.env usage</div>
         <pre><span class="cmt">// .env file (NOT committed to git)</span>
-VITE_API_URL=https://api.skillsync.udayasri.dev
+VITE_API_URL=https://api.skillsync.mraks.dev
 VITE_GOOGLE_CLIENT_ID=186617186160-...
 
 <span class="cmt">// In code — accessed via import.meta.env</span>
@@ -1744,7 +1744,7 @@ VITE_API_URL=http://localhost:8080
 VITE_GOOGLE_CLIENT_ID=186617...
 
 <span class="cmt"># .env.production (Vercel deployment)</span>
-VITE_API_URL=https://api.skillsync.udayasri.dev
+VITE_API_URL=https://api.skillsync.mraks.dev
 
 <span class="cmt"># Access in code:</span>
 import.meta.env.VITE_API_URL
@@ -1785,11 +1785,11 @@ import.meta.env.DEV   <span class="cmt">// true in dev</span></pre>
       <div class="grid-2">
         <div class="card">
           <h4>▲ Vercel (Frontend)</h4>
-          <p>Auto-deploys on git push. CDN edge servers globally. Free SSL. Custom domain: skillsync.udayasri.dev</p>
+          <p>Auto-deploys on git push. CDN edge servers globally. Free SSL. Custom domain: skillsync.mraks.dev</p>
         </div>
         <div class="card">
           <h4>☁️ AWS EC2 (Backend)</h4>
-          <p>Spring Boot JAR runs on EC2 instance. Custom domain: api.skillsync.udayasri.dev. CORS configured to allow Vercel origin.</p>
+          <p>Spring Boot JAR runs on EC2 instance. Custom domain: api.skillsync.mraks.dev. CORS configured to allow Vercel origin.</p>
         </div>
       </div>
       <div class="callout info">
@@ -2749,7 +2749,7 @@ amount: amount * <span class="num">100</span>,  <span class="cmt">// ₹500 → 
 
 <span class="cmt">3. services/axios.ts</span>
    → request interceptor runs (nothing to add, cookies handle auth)
-   → HTTP POST to api.skillsync.udayasri.dev/api/auth/login
+   → HTTP POST to api.skillsync.mraks.dev/api/auth/login
 
 <span class="cmt">4. [Spring Boot backend handles → returns {user, accessToken, ...}]</span>
 
@@ -3048,7 +3048,7 @@ amount: amount * <span class="num">100</span>,  <span class="cmt">// ₹500 → 
 
           <rect x="306" y="321" width="168" height="60" rx="6" fill="#1e2e2e" stroke="#585b70" stroke-width="1"/>
           <text x="390" y="349" fill="#585b70" font-size="9" text-anchor="middle">CORS Config:</text>
-          <text x="390" y="364" fill="#585b70" font-size="9" text-anchor="middle">Allow skillsync.udayasri.dev</text>
+          <text x="390" y="364" fill="#585b70" font-size="9" text-anchor="middle">Allow skillsync.mraks.dev</text>
 
           <!-- Arrow: API to DB -->
           <line x1="490" y1="191" x2="560" y2="191" stroke="#585b70" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4,3"/>
@@ -3086,7 +3086,7 @@ amount: amount * <span class="num">100</span>,  <span class="cmt">// ₹500 → 
 <!-- ═══ FINAL FOOTER ═══ -->
 <div style="padding:40px; background:linear-gradient(135deg, #0d0d1a, #111118); border-top:1px solid var(--border); text-align:center">
   <p style="color:var(--text3); font-size:13px; margin-bottom:8px">SkillSync Frontend · Built with React 18 + TypeScript + Redux Toolkit + React Query + Tailwind CSS + Razorpay</p>
-  <p style="color:var(--text3); font-size:12px">skillsync.udayasri.dev → api.skillsync.udayasri.dev (EC2) → PostgreSQL</p>
+  <p style="color:var(--text3); font-size:12px">skillsync.mraks.dev → api.skillsync.mraks.dev (EC2) → PostgreSQL</p>
   <p style="color:var(--accent); font-size:14px; font-weight:700; margin-top:16px; font-family:'Syne', sans-serif">You built this. You know this. Go ace the viva. 🚀</p>
 </div>
 

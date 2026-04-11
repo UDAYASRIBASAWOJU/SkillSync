@@ -2,36 +2,24 @@ import axios from 'axios';
 import { store } from '../store';
 import { logout, setCredentials } from '../store/slices/authSlice';
 
-// Dynamically detect the correct API domain based on the frontend domain.
-// This allows both domains (skillsync.mraks.dev and skillsync.udayasri.dev)
-// to use the same built code while avoiding third-party cookie blocking issues.
-const getApiBaseUrl = () => {
-  const isProd = import.meta.env.PROD;
-  if (!isProd) return import.meta.env.VITE_API_URL || 'http://localhost:8080';
+// Strongly force HTTPS in production to prevent Vercel ENV leaks pointing to raw IPs.
+const isProd = import.meta.env.PROD;
+let configuredUrl = import.meta.env.VITE_API_URL;
 
-  let currentHost = '';
-  if (typeof window !== 'undefined') {
-    currentHost = window.location.hostname;
-  }
+// Correct legacy or raw IP configurations inside production builds automatically.
+if (isProd && configuredUrl && configuredUrl.includes('35.153.59.2')) {
+    configuredUrl = 'https://api.skillsync.mraks.dev';
+}
 
-  // DYNAMIC MAPPING:
-  // skillsync.udayasri.dev -> api.skillsync.udayasri.dev
-  // skillsync.mraks.dev -> api.skillsync.mraks.dev
-  if (currentHost.includes('skillsync.udayasri.dev')) {
-    return 'https://api.skillsync.udayasri.dev';
-  } else if (currentHost.includes('skillsync.mraks.dev')) {
-    return 'https://api.skillsync.mraks.dev';
-  }
+// CRITICAL: If configuredUrl points to the frontend domain (skillsync.mraks.dev, Vercel),
+// redirect to the actual API domain (api.skillsync.mraks.dev, EC2). This handles
+// misconfigured VITE_API_URL in Vercel deployment settings.
+if (isProd && configuredUrl && new URL(configuredUrl).hostname === 'skillsync.mraks.dev') {
+    console.warn('[CORS FIX] Detected misconfigured API URL pointing to frontend domain. Redirecting to API Gateway...');
+    configuredUrl = 'https://api.skillsync.mraks.dev';
+}
 
-  // Fallback to Vercel env var if neither domain matched
-  let fallbackUrl = import.meta.env.VITE_API_URL;
-  if (fallbackUrl && fallbackUrl.includes('35.153.59.2')) {
-    return 'https://api.skillsync.udayasri.dev';
-  }
-  return fallbackUrl || 'https://api.skillsync.udayasri.dev';
-};
-
-export const API_BASE_URL = getApiBaseUrl();
+export const API_BASE_URL = configuredUrl || (isProd ? 'https://api.skillsync.mraks.dev' : 'http://localhost:8080');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -47,8 +35,6 @@ api.interceptors.request.use((config) => {
 
 // RESPONSE INTERCEPTOR — handle 401 with silent token refresh + retry
 let isRefreshing = false;
-let lastRefreshAttemptTime = 0;
-const REFRESH_COOLDOWN_MS = 10_000; // Prevent hammering refresh within 10 seconds
 let failedQueue: Array<{ resolve: () => void; reject: (err: any) => void }> = [];
 
 const isInvalidSessionStatus = (status?: number): boolean => status === 401 || status === 403;
@@ -78,16 +64,6 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== '/api/auth/refresh') {
       originalRequest._retry = true;
 
-      // Cooldown guard: if we just attempted a refresh recently and it failed,
-      // don't spam the server again — go straight to logout.
-      const now = Date.now();
-      if (now - lastRefreshAttemptTime < REFRESH_COOLDOWN_MS && !isRefreshing) {
-        console.warn('[Auth] Refresh cooldown active — skipping duplicate refresh attempt.');
-        store.dispatch(logout());
-        window.location.href = '/login?reason=session_expired';
-        return Promise.reject(error);
-      }
-
       if (isRefreshing) {
         return new Promise<void>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -100,7 +76,6 @@ api.interceptors.response.use(
       }
 
       isRefreshing = true;
-      lastRefreshAttemptTime = now;
 
       try {
         const currentRefreshToken = store.getState().auth.refreshToken;
@@ -185,10 +160,8 @@ api.interceptors.response.use(
     }
 
     // 429 / 503 — exponential backoff retry (max 3 times)
-    // CRITICAL: Never auto-retry the refresh endpoint — this was causing the 429 storm.
     const retryCount = originalRequest._retryCount || 0;
-    const isRefreshUrl = originalRequest.url === '/api/auth/refresh';
-    if ([429, 503].includes(error.response?.status) && retryCount < 3 && !isRefreshUrl) {
+    if ([429, 503].includes(error.response?.status) && retryCount < 3) {
       originalRequest._retryCount = retryCount + 1;
       const delay = Math.pow(2, retryCount) * 1000;
       await new Promise((res) => setTimeout(res, delay));

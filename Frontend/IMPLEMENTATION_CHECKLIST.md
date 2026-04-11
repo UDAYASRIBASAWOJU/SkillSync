@@ -373,7 +373,7 @@ npm run preview
 
 ### Environment Setup
 ```env
-VITE_API_URL=https://api.skillsync.udayasri.dev
+VITE_API_URL=https://api.skillsync.mraks.dev
 ```
 
 ### Vercel Deployment

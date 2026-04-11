@@ -427,7 +427,7 @@ vercel deploy --prod
 - **Deliverables**: `Frontend/DELIVERABLES.md`
 
 ### Backend Integration
-- Backend API: `https://api.skillsync.udayasri.dev`
+- Backend API: `https://api.skillsync.mraks.dev`
 - API Gateway: Port 8080
 - Microservices: Ports 8081-8087
 

@@ -1,16 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCredentials } from '../../store/slices/authSlice';
 import { useLocation } from 'react-router-dom';
 import api from '../../services/axios';
-import { store } from '../../store';
+import type { RootState } from '../../store';
 import type { ReactNode } from 'react';
 
 export const AuthLoader = ({ children }: { children: ReactNode }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const refreshToken = useSelector((state: RootState) => state.auth.refreshToken);
   const [loading, setLoading] = useState(true);
-  const hasAttempted = useRef(false);
 
   useEffect(() => {
     let mounted = true;
@@ -34,14 +36,8 @@ export const AuthLoader = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      // Read directly from store to avoid stale closures and prevent
-      // re-triggering the effect when auth state changes.
-      const currentAuth = store.getState().auth;
-
       // If user isn't loaded yet, try to fetch identity using cookies
-      if (!currentAuth.user && !hasAttempted.current) {
-        hasAttempted.current = true;
-
+      if (!user) {
         const loadCurrentUser = async () => {
           const { data } = await api.get('/api/auth/me', {
             _skipErrorRedirect: true,
@@ -49,10 +45,9 @@ export const AuthLoader = ({ children }: { children: ReactNode }) => {
           } as any);
 
           if (mounted && data) {
-            const latestAuth = store.getState().auth;
             dispatch(setCredentials({
-              accessToken: latestAuth.accessToken ?? undefined,
-              refreshToken: latestAuth.refreshToken ?? undefined,
+              accessToken: accessToken ?? undefined,
+              refreshToken: refreshToken ?? undefined,
               user: data,
             }));
           }
@@ -91,8 +86,7 @@ export const AuthLoader = ({ children }: { children: ReactNode }) => {
     initAuth();
 
     return () => { mounted = false; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, location.pathname]);
+  }, [dispatch, user, accessToken, refreshToken, location.pathname]);
 
   if (loading) {
     return (
