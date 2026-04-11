@@ -2,13 +2,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 import api from '../../services/axios';
-
+import logo from '../../assets/skillsync-logo.png';
 interface SidebarProps {
   role: 'ROLE_LEARNER' | 'ROLE_MENTOR' | 'ROLE_ADMIN';
   isOpen: boolean;
+  onToggle: () => void;
 }
 
-const Sidebar = ({ role, isOpen }: SidebarProps) => {
+const Sidebar = ({ role, isOpen, onToggle }: SidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,8 +53,20 @@ const Sidebar = ({ role, isOpen }: SidebarProps) => {
   };
 
   return (
-    <aside className={`fixed left-0 top-0 h-screen bg-white border-r border-[#FFDAC1]/50 flex flex-col justify-between z-40 transition-all duration-300 shadow-sm ${isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
+    <aside className={`fixed left-0 top-0 h-screen bg-[#C7CEEA] border-r border-[#FFDAC1]/50 flex flex-col justify-between z-40 transition-all duration-300 shadow-sm ${isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
       <div className="flex flex-col flex-1 overflow-y-auto w-full scrollbar-hide pt-4">
+
+        {/* TOP BRANDING & TOGGLE */}
+        <div className={`flex items-center h-16 shrink-0 mb-4 px-4 ${isOpen ? 'justify-between' : 'justify-center'}`}>
+          <div className={`flex items-center gap-2 overflow-hidden transition-all duration-300 ${isOpen ? 'w-auto opacity-100' : 'w-0 opacity-0 hidden'}`}>
+            <img src={logo} alt="SkillSync logo" className="w-8 h-8 object-contain shrink-0" />
+            <span className="text-xl font-black text-white tracking-tight">SkillSync</span>
+          </div>
+          
+          <button onClick={onToggle} className="p-2 rounded-xl text-white hover:bg-white/20 transition-colors focus:outline-none shrink-0" title="Toggle Sidebar">
+            <span className="material-symbols-outlined text-[28px] leading-none">{isOpen ? 'menu_open' : 'menu'}</span>
+          </button>
+        </div>
 
         {/* NAVIGATION LIKS */}
         <nav className="flex-1 w-full px-2 py-4 space-y-2">

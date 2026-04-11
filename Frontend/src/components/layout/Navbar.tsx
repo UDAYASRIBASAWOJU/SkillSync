@@ -6,14 +6,12 @@ import api from '../../services/axios';
 import notificationService from '../../services/notificationService';
 import type { RootState } from '../../store';
 import ThemeToggleButton from '../ui/ThemeToggleButton';
-import logo from '../../assets/skillsync-logo.png';
 
 interface NavbarProps {
   onMenuClick?: () => void;
-  isSidebarOpen?: boolean;
 }
 
-const Navbar = ({ onMenuClick, isSidebarOpen }: NavbarProps) => {
+const Navbar = ({ onMenuClick }: NavbarProps) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const queryClient = useQueryClient();
 
@@ -55,15 +53,12 @@ const Navbar = ({ onMenuClick, isSidebarOpen }: NavbarProps) => {
   const avatarClass = colors[colorIndex] || 'bg-[#FFB7B2]';
 
   return (
-    <header className="h-16 w-full glass-nav bg-white/90 border-b border-[#FFDAC1]/50 flex items-center justify-between px-4 lg:px-6 z-30 sticky top-0 transition-all shadow-sm">
+    <header className="h-16 w-full glass-nav bg-[#C7CEEA]/90 border-b border-[#FFDAC1]/50 flex items-center justify-between px-4 lg:px-6 z-30 sticky top-0 transition-all shadow-sm">
       <div className="flex-1 flex items-center gap-3">
-        <button onClick={onMenuClick} className="p-2 -ml-2 rounded-xl text-[#888888] hover:text-[#FFB7B2] hover:bg-[#FFB7B2]/10 transition-colors focus:outline-none">
-          <span className="material-symbols-outlined text-[28px] leading-none">{isSidebarOpen ? 'menu_open' : 'menu'}</span>
+        {/* Mobile menu toggle (Sidebar handles desktop toggle) */}
+        <button onClick={onMenuClick} className="p-2 -ml-2 rounded-xl text-[#888888] hover:text-[#FFB7B2] hover:bg-[#FFB7B2]/10 transition-colors focus:outline-none lg:hidden">
+          <span className="material-symbols-outlined text-[28px] leading-none">menu</span>
         </button>
-        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <img src={logo} alt="SkillSync logo" className="w-8 h-8 object-contain" />
-          <span className="text-xl font-black text-[#FFB7B2] tracking-tight hidden sm:block">SkillSync</span>
-        </Link>
       </div>
 
       <div className="flex items-center space-x-3">
