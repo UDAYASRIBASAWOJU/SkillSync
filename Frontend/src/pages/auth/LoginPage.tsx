@@ -109,28 +109,28 @@ const LoginPage = () => {
   });
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center justify-center min-h-[80vh]">
       <div className="flex items-center gap-3 mb-4 group transition-all">
         <img 
           src={logo} 
           alt="SkillSync Logo" 
-          className="w-12 h-12 object-contain hover:scale-110 transition duration-500" 
+          className="w-14 h-14 object-contain hover:scale-110 transition duration-500" 
           onError={(e: any) => { e.target.src = 'https://via.placeholder.com/48?text=S'; }} 
         />
-        <h1 className="text-4xl font-black tracking-tighter text-on-surface">SkillSync</h1>
+        <h1 className="text-4xl font-black tracking-tighter text-[#191c1e]">SkillSync</h1>
       </div>
-      <p className="text-sm text-on-surface-variant font-medium mb-8 text-center px-4 max-w-xs">Connecting ambition with expertise, one sync at a time.</p>
+      <p className="text-sm text-[#191c1e]/70 font-bold mb-8 text-center px-4 max-w-xs">Connecting ambition with expertise, one sync at a time.</p>
 
-      <div className="w-full bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sm border border-outline-variant/15 transition-all">
-        <h2 className="text-xl font-bold text-on-surface mb-6">Welcome back</h2>
+      <div className="w-full max-w-md bg-[#FFB7B2]/40 backdrop-blur-md p-8 md:p-10 rounded-3xl shadow-xl border border-[#FFB7B2]/50 transition-all">
+        <h2 className="text-2xl font-black text-[#191c1e] mb-6">Welcome back</h2>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="text-sm font-semibold text-on-surface-variant block mb-1">Email</label>
+            <label className="text-sm font-bold text-[#191c1e]/70 block mb-1">Email</label>
             <input 
               type="email" 
               {...register('email', { required: 'Email is required' })} 
-              className="w-full h-12 px-4 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all duration-200" 
+              className="w-full h-12 px-4 bg-white/60 border border-[#FFB7B2]/30 rounded-xl focus:ring-2 focus:ring-[#FFB7B2] outline-none transition-all duration-200" 
               placeholder="name@example.com"
             />
             {errors.email && <p className="text-xs text-error mt-1">{errors.email.message as string}</p>}
@@ -138,27 +138,25 @@ const LoginPage = () => {
 
           <div>
             <div className="flex justify-between items-center mb-1">
-              <label className="text-sm font-semibold text-on-surface-variant">Password</label>
-              <Link to="/forgot-password" className="text-sm font-bold text-primary hover:underline">Forgot password?</Link>
+              <label className="text-sm font-bold text-[#191c1e]/70">Password</label>
+              <Link to="/forgot-password" disabled className="text-sm font-bold text-[#191c1e] hover:underline opacity-50 cursor-not-allowed">Forgot password?</Link>
             </div>
             <input 
               type="password" 
               {...register('password', { required: 'Password is required' })} 
-              className="w-full h-12 px-4 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all duration-200" 
+              className="w-full h-12 px-4 bg-white/60 border border-[#FFB7B2]/30 rounded-xl focus:ring-2 focus:ring-[#FFB7B2] outline-none transition-all duration-200" 
               placeholder="••••••••"
             />
             {errors.password && <p className="text-xs text-error mt-1">{errors.password.message as string}</p>}
-          </div>
-
-          {loginMutation.isError && <p className="text-xs text-error mt-2">Error connecting to server. Please try again.</p>}
+            {loginMutation.isError && <p className="text-xs text-error mt-2">Error connecting to server. Please try again.</p>}
 
           <button 
             type="submit" 
             disabled={loginMutation.isPending} 
-            className="mt-6 flex items-center justify-center w-full h-12 gradient-btn text-white font-bold rounded-xl shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-500 disabled:opacity-70 disabled:scale-100"
+            className="mt-6 flex items-center justify-center w-full h-12 bg-[#FFDAC1] hover:bg-[#FFDAC1]/80 text-[#191c1e] font-black rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-70 disabled:scale-100"
           >
             {loginMutation.isPending ? (
-              <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
+              <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#191c1e]"></span>
             ) : (
               <>
                 Sign In 
@@ -171,18 +169,18 @@ const LoginPage = () => {
         </form>
 
         <div className="mt-6 flex items-center justify-center space-x-4">
-          <div className="flex-1 h-px bg-outline-variant/30"></div>
-          <span className="text-xs font-semibold text-on-surface-variant tracking-wider uppercase">OR CONTINUE WITH</span>
-          <div className="flex-1 h-px bg-outline-variant/30"></div>
+          <div className="flex-1 h-px bg-[#191c1e]/10"></div>
+          <span className="text-xs font-black text-[#191c1e]/40 tracking-widest uppercase">OR</span>
+          <div className="flex-1 h-px bg-[#191c1e]/10"></div>
         </div>
 
         <button 
           onClick={() => handleGoogleLogin()} 
           disabled={oauthMutation.isPending}
-          className="mt-6 flex items-center justify-center w-full h-12 bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-bold rounded-xl shadow-sm border border-outline-variant/30 transition-all duration-200"
+          className="mt-6 flex items-center justify-center w-full h-12 bg-white/40 hover:bg-white/60 text-[#191c1e] font-bold rounded-xl shadow-sm border border-[#FFB7B2]/30 transition-all duration-200"
         >
           {oauthMutation.isPending ? (
-            <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-on-surface"></span>
+            <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#191c1e]"></span>
           ) : (
             <>
               <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
@@ -196,8 +194,8 @@ const LoginPage = () => {
           )}
         </button>
 
-        <p className="mt-6 text-center text-sm font-semibold text-on-surface-variant">
-          Don't have an account? <Link to="/register" className="text-primary hover:underline">Sign up</Link>
+        <p className="mt-8 text-center text-sm font-bold text-[#191c1e]/60">
+          Don't have an account? <Link to="/register" className="text-[#191c1e] hover:underline font-black">Sign up</Link>
         </p>
       </div>
     </div>

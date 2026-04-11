@@ -11,6 +11,7 @@ import logo from '../../assets/skillsync-logo.png';
 
 const Navbar = () => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const sidebarOpen = useSelector((state: RootState) => state.ui.sidebarOpen);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
@@ -61,10 +62,12 @@ const Navbar = () => {
         >
           <span className="material-symbols-outlined text-2xl">menu</span>
         </button>
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="SkillSync logo" className="w-8 h-8 object-contain" onError={(e: any) => { e.target.src = 'https://via.placeholder.com/32'; }} />
-          <span className="text-lg font-black text-[#191c1e] tracking-tight">SkillSync</span>
-        </Link>
+        {!sidebarOpen && (
+          <Link to="/" className="flex items-center gap-2">
+            <img src={logo} alt="SkillSync logo" className="w-8 h-8 object-contain" onError={(e: any) => { e.target.src = 'https://via.placeholder.com/32'; }} />
+            <span className="text-lg font-black text-[#191c1e] tracking-tight">SkillSync</span>
+          </Link>
+        )}
       </div>
 
       <div className="flex items-center space-x-4 text-[#191c1e]">
