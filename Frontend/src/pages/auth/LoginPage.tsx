@@ -139,7 +139,7 @@ const LoginPage = () => {
           <div>
             <div className="flex justify-between items-center mb-1">
               <label className="text-sm font-bold text-[#191c1e]/70">Password</label>
-              <Link to="/forgot-password" disabled className="text-sm font-bold text-[#191c1e] hover:underline opacity-50 cursor-not-allowed">Forgot password?</Link>
+              <span className="text-sm font-bold text-[#191c1e] opacity-50 cursor-not-allowed">Forgot password?</span>
             </div>
             <input 
               type="password" 
@@ -149,6 +149,7 @@ const LoginPage = () => {
             />
             {errors.password && <p className="text-xs text-error mt-1">{errors.password.message as string}</p>}
             {loginMutation.isError && <p className="text-xs text-error mt-2">Error connecting to server. Please try again.</p>}
+          </div>
 
           <button 
             type="submit" 
