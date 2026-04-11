@@ -48,11 +48,11 @@
   --pastel-purple: #C7CEEA;
 
   /* Sidebar Theme Variables (Light) */
-  --sidebar-bg: #FFB7B2;
+  --sidebar-bg: #F2F0C8;
   --sidebar-border: rgba(25, 28, 30, 0.08);
   --sidebar-text: #191c1e;
   --sidebar-text-muted: rgba(25, 28, 30, 0.6);
-  --sidebar-active-bg: #F2F0C8;
+  --sidebar-active-bg: #FFDAC1;
   --navbar-bg: #F2F0C8;
 }
 
