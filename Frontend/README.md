@@ -2,20 +2,20 @@
 
 ## SkillSync Production Notes
 
-This frontend is deployed on Vercel (`https://skillsync.mraks.dev`), while backend APIs are served directly from the gateway API domain (`https://api.skillsync.mraks.dev`).
+This frontend is deployed on Vercel (`https://skillsync.udayasri.dev`), while backend APIs are served directly from the gateway API domain (`https://api.skillsync.udayasri.dev`).
 
-- API calls should target `https://api.skillsync.mraks.dev` (gateway ingress on EC2).
+- API calls should target `https://api.skillsync.udayasri.dev` (gateway ingress on EC2).
 - Vercel should not proxy backend APIs via rewrites.
-- Swagger is exposed at `https://api.skillsync.mraks.dev/swagger-ui.html`.
+- Swagger is exposed at `https://api.skillsync.udayasri.dev/swagger-ui.html`.
 
 Recommended environment variables:
 
 ```bash
-VITE_API_URL=https://api.skillsync.mraks.dev
-VITE_BACKEND_BASE_URL=https://api.skillsync.mraks.dev
-VITE_MONITORING_BASE_URL=https://api.skillsync.mraks.dev
-VITE_SWAGGER_URL=https://api.skillsync.mraks.dev/swagger-ui/index.html
-VITE_EUREKA_URL=https://api.skillsync.mraks.dev/eureka-ui/
+VITE_API_URL=https://api.skillsync.udayasri.dev
+VITE_BACKEND_BASE_URL=https://api.skillsync.udayasri.dev
+VITE_MONITORING_BASE_URL=https://api.skillsync.udayasri.dev
+VITE_SWAGGER_URL=https://api.skillsync.udayasri.dev/swagger-ui/index.html
+VITE_EUREKA_URL=https://api.skillsync.udayasri.dev/eureka-ui/
 VITE_SONAR_URL=https://sonarcloud.io/organizations/skillsync-github/projects
 VITE_GOOGLE_CLIENT_ID=<google-client-id>
 ```

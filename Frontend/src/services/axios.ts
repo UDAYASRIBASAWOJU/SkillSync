@@ -8,18 +8,18 @@ let configuredUrl = import.meta.env.VITE_API_URL;
 
 // Correct legacy or raw IP configurations inside production builds automatically.
 if (isProd && configuredUrl && configuredUrl.includes('35.153.59.2')) {
-    configuredUrl = 'https://api.skillsync.mraks.dev';
+    configuredUrl = 'https://api.skillsync.udayasri.dev';
 }
 
-// CRITICAL: If configuredUrl points to the frontend domain (skillsync.mraks.dev, Vercel),
-// redirect to the actual API domain (api.skillsync.mraks.dev, EC2). This handles
+// CRITICAL: If configuredUrl points to the frontend domain (skillsync.udayasri.dev, Vercel),
+// redirect to the actual API domain (api.skillsync.udayasri.dev, EC2). This handles
 // misconfigured VITE_API_URL in Vercel deployment settings.
-if (isProd && configuredUrl && new URL(configuredUrl).hostname === 'skillsync.mraks.dev') {
+if (isProd && configuredUrl && new URL(configuredUrl).hostname === 'skillsync.udayasri.dev') {
     console.warn('[CORS FIX] Detected misconfigured API URL pointing to frontend domain. Redirecting to API Gateway...');
-    configuredUrl = 'https://api.skillsync.mraks.dev';
+    configuredUrl = 'https://api.skillsync.udayasri.dev';
 }
 
-export const API_BASE_URL = configuredUrl || (isProd ? 'https://api.skillsync.mraks.dev' : 'http://localhost:8080');
+export const API_BASE_URL = configuredUrl || (isProd ? 'https://api.skillsync.udayasri.dev' : 'http://localhost:8080');
 
 const api = axios.create({
   baseURL: API_BASE_URL,

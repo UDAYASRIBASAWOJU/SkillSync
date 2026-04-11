@@ -456,7 +456,7 @@ tsc -b
 VITE_API_URL=http://localhost:8080
 
 # Production
-VITE_API_URL=https://api.skillsync.mraks.dev
+VITE_API_URL=https://api.skillsync.udayasri.dev
 ```
 
 ---
@@ -485,7 +485,7 @@ VITE_API_URL=https://api.skillsync.mraks.dev
 - **API Docs**: `/docs/03_Frontend_Design_and_API_Contract.md`
 - **Architecture**: `/docs/11_Frontend_Complete_Implementation.md`
 - **Checklist**: `/Frontend/IMPLEMENTATION_CHECKLIST.md`
-- **Backend**: Spring Boot Microservices on `api.skillsync.mraks.dev`
+- **Backend**: Spring Boot Microservices on `api.skillsync.udayasri.dev`
 
 ---
 
