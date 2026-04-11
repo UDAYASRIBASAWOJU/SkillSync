@@ -35,6 +35,8 @@ api.interceptors.request.use((config) => {
 
 // RESPONSE INTERCEPTOR — handle 401 with silent token refresh + retry
 let isRefreshing = false;
+let lastRefreshAttemptTime = 0;
+const REFRESH_COOLDOWN_MS = 10_000; // Prevent hammering refresh within 10 seconds
 let failedQueue: Array<{ resolve: () => void; reject: (err: any) => void }> = [];
 
 const isInvalidSessionStatus = (status?: number): boolean => status === 401 || status === 403;
@@ -64,6 +66,16 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== '/api/auth/refresh') {
       originalRequest._retry = true;
 
+      // Cooldown guard: if we just attempted a refresh recently and it failed,
+      // don't spam the server again — go straight to logout.
+      const now = Date.now();
+      if (now - lastRefreshAttemptTime < REFRESH_COOLDOWN_MS && !isRefreshing) {
+        console.warn('[Auth] Refresh cooldown active — skipping duplicate refresh attempt.');
+        store.dispatch(logout());
+        window.location.href = '/login?reason=session_expired';
+        return Promise.reject(error);
+      }
+
       if (isRefreshing) {
         return new Promise<void>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -76,6 +88,7 @@ api.interceptors.response.use(
       }
 
       isRefreshing = true;
+      lastRefreshAttemptTime = now;
 
       try {
         const currentRefreshToken = store.getState().auth.refreshToken;
@@ -160,8 +173,10 @@ api.interceptors.response.use(
     }
 
     // 429 / 503 — exponential backoff retry (max 3 times)
+    // CRITICAL: Never auto-retry the refresh endpoint — this was causing the 429 storm.
     const retryCount = originalRequest._retryCount || 0;
-    if ([429, 503].includes(error.response?.status) && retryCount < 3) {
+    const isRefreshUrl = originalRequest.url === '/api/auth/refresh';
+    if ([429, 503].includes(error.response?.status) && retryCount < 3 && !isRefreshUrl) {
       originalRequest._retryCount = retryCount + 1;
       const delay = Math.pow(2, retryCount) * 1000;
       await new Promise((res) => setTimeout(res, delay));
