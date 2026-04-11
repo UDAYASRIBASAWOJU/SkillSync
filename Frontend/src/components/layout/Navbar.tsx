@@ -6,8 +6,14 @@ import api from '../../services/axios';
 import notificationService from '../../services/notificationService';
 import type { RootState } from '../../store';
 import ThemeToggleButton from '../ui/ThemeToggleButton';
+import logo from '../../assets/skillsync-logo.png';
 
-const Navbar = () => {
+interface NavbarProps {
+  onMenuClick?: () => void;
+  isSidebarOpen?: boolean;
+}
+
+const Navbar = ({ onMenuClick, isSidebarOpen }: NavbarProps) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const queryClient = useQueryClient();
 
@@ -46,31 +52,38 @@ const Navbar = () => {
   
   const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-violet-500', 'bg-amber-500', 'bg-rose-500'];
   const colorIndex = (initial1.charCodeAt(0) % colors.length);
-  const avatarClass = colors[colorIndex] || 'bg-primary';
+  const avatarClass = colors[colorIndex] || 'bg-[#FFB7B2]';
 
   return (
-    <header className="h-16 w-full glass-nav bg-surface-container-lowest/80 border-b border-outline-variant/10 flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0 transition-all">
-      <div className="flex-1 flex items-center">
+    <header className="h-16 w-full glass-nav bg-white/90 border-b border-[#FFDAC1]/50 flex items-center justify-between px-4 lg:px-6 z-30 sticky top-0 transition-all shadow-sm">
+      <div className="flex-1 flex items-center gap-3">
+        <button onClick={onMenuClick} className="p-2 -ml-2 rounded-xl text-[#888888] hover:text-[#FFB7B2] hover:bg-[#FFB7B2]/10 transition-colors focus:outline-none">
+          <span className="material-symbols-outlined text-[28px] leading-none">{isSidebarOpen ? 'menu_open' : 'menu'}</span>
+        </button>
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <img src={logo} alt="SkillSync logo" className="w-8 h-8 object-contain" />
+          <span className="text-xl font-black text-[#FFB7B2] tracking-tight hidden sm:block">SkillSync</span>
+        </Link>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-3">
         <ThemeToggleButton className="px-2.5 py-1.5" showLabel={false} />
 
-        <Link to="/notifications" className="relative p-2 rounded-full flex hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all duration-200">
+        <Link to="/notifications" className="relative p-2 rounded-full flex hover:bg-[#F2F0C8]/50 text-[#888888] hover:text-[#FFB7B2] transition-all duration-200">
           <span className="material-symbols-outlined text-[26px]">notifications</span>
           {unreadCount > 0 && (
-            <span className="absolute top-1 right-2 min-w-[18px] h-[18px] bg-error text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 shadow-sm animate-pulse-slow">
+            <span className="absolute top-1 right-2 min-w-[18px] h-[18px] bg-[#B5EAD7] text-[#4A4A4A] border border-white text-[10px] font-extrabold rounded-full flex items-center justify-center px-1 shadow-sm">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
         </Link>
 
-        <Link to="/profile" className="flex items-center pl-4 border-l border-outline-variant/30 hover:opacity-80 transition-opacity">
+        <Link to="/profile" className="flex items-center pl-3 border-l border-[#FFDAC1]/50 hover:opacity-80 transition-opacity">
           <div className="hidden md:flex flex-col items-end mr-3">
-            <span className="text-sm font-bold text-on-surface leading-tight">{user?.firstName} {user?.lastName}</span>
-            <span className="text-xs text-on-surface-variant font-medium">Hello there</span>
+            <span className="text-sm font-bold text-[#4A4A4A] leading-tight">{user?.firstName} {user?.lastName}</span>
+            <span className="text-xs text-[#888888] font-medium">Hello there</span>
           </div>
-          <div className={`w-9 h-9 rounded-full ${avatarClass} text-white flex items-center justify-center font-bold shadow-md shrink-0`}>
+          <div className={`w-9 h-9 rounded-full ${avatarClass} text-white flex items-center justify-center font-bold shadow-sm shrink-0 border-2 border-white`}>
             {initials}
           </div>
         </Link>
