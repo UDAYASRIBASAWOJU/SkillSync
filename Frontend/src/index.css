@@ -125,6 +125,10 @@ html,
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.sidebar-header-spacer {
+  height: 64px;
+}
+
 .gradient-btn {
   background: linear-gradient(135deg, var(--gradient-btn-start), var(--gradient-btn-end));
 }
