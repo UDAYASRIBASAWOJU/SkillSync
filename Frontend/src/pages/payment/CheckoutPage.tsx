@@ -16,6 +16,7 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
+  const [razorpayReady, setRazorpayReady] = useState(() => !!window.Razorpay);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal'>('card');
   const [loadingStep, setLoadingStep] = useState<'' | 'session' | 'order' | 'verify'>('');
   const pendingSessionIdRef = useRef<number | null>(null);
@@ -23,15 +24,28 @@ const CheckoutPage = () => {
   useEffect(() => {
     if (!state || !state.mentorId) navigate('/mentors', { replace: true });
     
-    // Dynamically load Razorpay SDK
+    if (window.Razorpay) {
+      setRazorpayReady(true);
+      return;
+    }
+
+    // Check if script already exists but hasn't finished loading
+    const existingScript = document.querySelector('script[src*="razorpay"]');
+    if (existingScript) {
+      existingScript.addEventListener('load', () => setRazorpayReady(true));
+      existingScript.addEventListener('error', () => console.error('Failed to load Razorpay SDK'));
+      return;
+    }
+
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
+    script.onload = () => setRazorpayReady(true);
+    script.onerror = () => {
+      console.error('Failed to load Razorpay SDK');
+      showToast({ message: 'Failed to load payment gateway. Please check your connection.', type: 'error' });
     };
+    document.body.appendChild(script);
   }, [state, navigate]);
 
   if (!state) return null;
@@ -77,6 +91,12 @@ const CheckoutPage = () => {
     const normalizedMentorId = Number(mentorId);
     if (!Number.isFinite(normalizedMentorId)) {
       showToast({ message: 'Invalid mentor selection. Please rebook from mentor page.', type: 'error' });
+      return;
+    }
+
+    // EARLY CHECK for Razorpay readiness
+    if (!window.Razorpay && !razorpayReady) {
+      showToast({ message: 'Payment gateway is still loading. Please wait a moment and try again.', type: 'error' });
       return;
     }
 

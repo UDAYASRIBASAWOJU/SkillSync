@@ -31,22 +31,33 @@ const MentorDetailPage = () => {
   const [selectedDateStr, setSelectedDateStr] = useState<string>(localIsoDate);
 
   // Load Razorpay SDK with proper onload tracking
-  const [razorpayReady, setRazorpayReady] = useState(false);
+  const [razorpayReady, setRazorpayReady] = useState(() => !!window.Razorpay);
+
   useEffect(() => {
-    // If already loaded (e.g. from a previous page visit), skip
     if (window.Razorpay) {
       setRazorpayReady(true);
       return;
     }
+
+    // Check if script already exists but hasn't finished loading
+    const existingScript = document.querySelector('script[src*="razorpay"]');
+    if (existingScript) {
+      existingScript.addEventListener('load', () => setRazorpayReady(true));
+      existingScript.addEventListener('error', () => console.error('Failed to load Razorpay SDK'));
+      return;
+    }
+
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
     script.onload = () => setRazorpayReady(true);
-    script.onerror = () => console.error('Failed to load Razorpay SDK');
-    document.body.appendChild(script);
-    return () => {
-      try { document.body.removeChild(script); } catch (_) { /* already removed */ }
+    script.onerror = () => {
+      console.error('Failed to load Razorpay SDK');
+      showToast({ message: 'Failed to load payment gateway. Please check your connection.', type: 'error' });
     };
+    document.body.appendChild(script);
+
+    // Note: We don't remove the script on unmount to keep the library available globally
   }, []);
 
   // Fetch mentor profile
@@ -186,6 +197,12 @@ const MentorDetailPage = () => {
 
     const mentorName = `${m.firstName || ''} ${m.lastName || ''}`.trim() || 'Mentor';
 
+    // EARLY CHECK for Razorpay readiness to avoid creating sessions/orders if we can't pay
+    if (!window.Razorpay && !razorpayReady) {
+      showToast({ message: 'Payment gateway is still loading. Please wait a moment and try again.', type: 'error' });
+      return;
+    }
+
     // Build a session date from the selectedDateStr + slot time
     const sessionDate = new Date(selectedDateStr);
     const [hours, minutes] = String(selectedSlot.startTime).split(':');
@@ -216,8 +233,8 @@ const MentorDetailPage = () => {
       }, { _skipErrorRedirect: true } as any);
       const { orderId, amount, currency, keyId } = orderRes.data;
 
-      if (!window.Razorpay || !razorpayReady) {
-        showToast({ message: 'Payment gateway is still loading. Please wait a moment and try again.', type: 'error' });
+      if (!window.Razorpay) {
+        showToast({ message: 'Payment gateway connection lost. Please refresh the page.', type: 'error' });
         await rollbackPendingSession();
         setLoadingStep('');
         return;
