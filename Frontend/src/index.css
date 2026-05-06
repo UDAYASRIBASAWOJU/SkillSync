@@ -57,7 +57,7 @@
 }
 
 html.theme-dark {
-  --color-primary: #489838;
+  --color-primary: #8bacff;
   --color-primary-container: #5f86ff;
   --color-on-primary: #071225;
   --color-surface: #0a101b;
@@ -73,7 +73,7 @@ html.theme-dark {
   --color-outline: #6e7f9d;
   --color-outline-variant: #354969;
   --color-secondary: #95acff;
-  --color-error: #d52424;
+  --color-error: #ff7a7a;
 
   --gradient-btn-start: #5f86ff;
   --gradient-btn-end: #2bc2d5;
