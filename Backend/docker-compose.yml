@@ -40,7 +40,7 @@ services:
       - ./init-databases.sql:/docker-entrypoint-initdb.d/1-init-databases.sql
       - ./insert-data.sql:/docker-entrypoint-initdb.d/2-insert-data.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -63,10 +63,10 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     ports:
-      - "127.0.0.1:5672:5672"     # AMQP
-      - "127.0.0.1:15672:15672"   # Management UI (http://localhost:15672)
+      - "127.0.0.1:5672:5672" # AMQP
+      - "127.0.0.1:15672:15672" # Management UI (http://localhost:15672)
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      test: [ "CMD", "rabbitmq-diagnostics", "check_port_connectivity" ]
       interval: 15s
       timeout: 10s
       retries: 5
@@ -91,7 +91,7 @@ services:
     volumes:
       - redis-data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -111,11 +111,11 @@ services:
         limits:
           memory: 384M
     ports:
-      - "127.0.0.1:9411:9411"   # Zipkin UI (http://localhost:9411)
+      - "127.0.0.1:9411:9411" # Zipkin UI (http://localhost:9411)
     environment:
       STORAGE_TYPE: mem
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:9411/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:9411/health || exit 1" ]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -136,7 +136,7 @@ services:
         limits:
           memory: 384M
     ports:
-      - "127.0.0.1:9090:9090"   # Prometheus UI (http://localhost:9090)
+      - "127.0.0.1:9090:9090" # Prometheus UI (http://localhost:9090)
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
@@ -147,7 +147,7 @@ services:
       - '--web.enable-lifecycle'
       - '--web.external-url=/prometheus/'
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:9090/prometheus/-/healthy || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:9090/prometheus/-/healthy || exit 1" ]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -168,7 +168,7 @@ services:
         limits:
           memory: 256M
     ports:
-      - "127.0.0.1:3000:3000"   # Grafana UI (http://localhost:3000)
+      - "127.0.0.1:3000:3000" # Grafana UI (http://localhost:3000)
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-changeme}
@@ -183,7 +183,7 @@ services:
       prometheus:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -204,13 +204,13 @@ services:
         limits:
           memory: 256M
     ports:
-      - "127.0.0.1:3100:3100"   # Loki API
+      - "127.0.0.1:3100:3100" # Loki API
     volumes:
       - ./monitoring/loki/loki-config.yml:/etc/loki/local-config.yaml:ro
       - loki-data:/loki
     command: -config.file=/etc/loki/local-config.yaml
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1" ]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -235,9 +235,9 @@ services:
     environment:
       JAVA_OPTS: "-Xms128m -Xmx384m"
     ports:
-      - "127.0.0.1:8761:8761"   # Exposed for debug dashboard — remove in true production
+      - "127.0.0.1:8761:8761" # Exposed for debug dashboard — remove in true production
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8761/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8761/actuator/health || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -264,7 +264,7 @@ services:
       eureka-server:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8888/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8888/actuator/health || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -289,14 +289,14 @@ services:
     environment:
       JAVA_OPTS: "-Xms128m -Xmx384m"
     ports:
-      - "127.0.0.1:8080:8080"   # Bound to localhost to force traffic through NGINX host proxy
+      - "127.0.0.1:8080:8080" # Bound to localhost to force traffic through NGINX host proxy
     depends_on:
       eureka-server:
         condition: service_healthy
       config-server:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health/readiness || curl -fsS http://localhost:8080/actuator/health/readiness || nc -z localhost 8080 || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health/readiness || curl -fsS http://localhost:8080/actuator/health/readiness || nc -z localhost 8080 || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -331,7 +331,7 @@ services:
       config-server:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8081/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8081/actuator/health || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -366,7 +366,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8082/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8082/actuator/health || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -401,7 +401,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8084/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8084/actuator/health || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -436,7 +436,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8085/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8085/actuator/health || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -476,7 +476,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8088/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8088/actuator/health || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -511,7 +511,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8086/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8086/actuator/health || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 10

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillSync Frontend and Backend Flowchart</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #1f2a44;
+      --muted: #5c6b8a;
+      --line: #dce3f2;
+      --brand: #1d4ed8;
+      --brand-2: #0f766e;
+      --soft: #eff6ff;
+      --warn: #f59e0b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 100%);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+
+    .hero {
+      background: linear-gradient(130deg, var(--brand), var(--brand-2));
+      color: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .hero p {
+      margin: 8px 0 0;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 4px 10px rgba(20, 37, 63, 0.06);
+    }
+
+    .card h2 {
+      margin: 0 0 6px;
+      font-size: 21px;
+      color: var(--ink);
+    }
+
+    .card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #fff8eb;
+      border: 1px solid #f6dfb4;
+      color: #7a4f06;
+      font-size: 14px;
+    }
+
+    .legend {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--soft);
+      border: 1px solid #cfe0ff;
+      color: #173d8a;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .mermaid {
+      overflow-x: auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+    }
+
+    @media (min-width: 960px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card.full {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>SkillSync Frontend and Backend Flowchart</h1>
+      <p>Presentation-ready architecture and runtime request flow for your current implementation.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card full">
+        <h2>1. End-to-End System Flow</h2>
+        <p>How UI requests travel through API Gateway into domain services, databases, cache, and event bus.</p>
+        <div class="mermaid">
+flowchart LR
+    U[User Browser]
+    FE[React Frontend\nVite + TypeScript\nRedux + React Query]
+    AX[Axios Client\nJWT + Refresh Interceptors]
+    GW[API Gateway]
+    EU[Eureka Service Discovery]
+    CS[Config Server]
+
+    AUTH[Auth Service]
+    USER[User Service]
+    SKILL[Skill Service]
+    SESSION[Session Service]
+    PAYMENT[Payment Service]
+    NOTIF[Notification Service]
+
+    DBA[(Auth DB)]
+    DBU[(User DB)]
+    DBSK[(Skill DB)]
+    DBS[(Session DB)]
+    DBP[(Payment DB)]
+    DBN[(Notification DB)]
+
+    REDIS[(Redis Cache)]
+    RABBIT[(RabbitMQ)]
+
+    U --> FE --> AX --> GW
+
+    GW --> EU
+    GW --> CS
+
+    GW --> AUTH
+    GW --> USER
+    GW --> SKILL
+    GW --> SESSION
+    GW --> PAYMENT
+    GW --> NOTIF
+
+    AUTH --> DBA
+    USER --> DBU
+    SKILL --> DBSK
+    SESSION --> DBS
+    PAYMENT --> DBP
+    NOTIF --> DBN
+
+    AUTH <--> REDIS
+    USER <--> REDIS
+    SKILL <--> REDIS
+    SESSION <--> REDIS
+    NOTIF <--> REDIS
+
+    SESSION --> RABBIT
+    PAYMENT --> RABBIT
+    RABBIT --> NOTIF
+        </div>
+      </article>
+
+      <article class="card full">
+        <h2>2. REST Request Lifecycle</h2>
+        <p>How a normal frontend action executes with token handling and automatic retry on refresh.</p>
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant B as Browser UI
+    participant F as React Component
+    participant Q as React Query
+    participant A as Axios Interceptor
+    participant G as API Gateway
+    participant S as Target Microservice
+    participant D as Service Database
+
+    B->>F: User action
+    F->>Q: query or mutation
+    Q->>A: HTTP request
+    A->>A: Attach Bearer token
+    A->>G: API call
+    G->>S: Route and authorize
+    S->>D: Read or write
+    D-->>S: DB result
+    S-->>G: JSON response
+    G-->>A: HTTP response
+    A-->>Q: Data or error
+    Q-->>F: Cache and UI update
+
+    alt Access token expired
+        G-->>A: 401 Unauthorized
+        A->>G: POST /api/auth/refresh
+        G-->>A: New token/session
+        A->>G: Retry original request
+        G-->>A: Success response
+    end
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>3. Notifications: Real-Time Path</h2>
+        <p>Socket push for notifications, then frontend query invalidation for refreshed unread counts.</p>
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant N as Navbar
+    participant NS as notificationService.ts
+    participant G as API Gateway
+    participant W as ws/notifications endpoint
+    participant NO as Notification Service
+    participant DB as Notification DB
+
+    N->>NS: subscribeToNotifications(listener)
+    NS->>G: STOMP connect (ws or wss)
+    NS->>W: Subscribe /user/queue/notifications
+
+    NO->>DB: Save notification
+    NO-->>W: Push payload
+    W-->>NS: STOMP message
+    NS-->>N: listener(payload)
+
+    N->>N: invalidate notifications queries
+    N->>G: GET unread count and list
+    G->>NO: Forward request
+    NO-->>G: data
+    G-->>N: updated state
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>4. Group Messaging: Current Path</h2>
+        <p>Current frontend behavior is polling-based for group discussions.</p>
+        <div class="mermaid">
+flowchart TD
+    A[GroupDetailPage opens] --> B{Joined member or admin?}
+    B -- No --> C[Show join gate]
+    B -- Yes --> D[Enable discussions query]
+    D --> E[Poll every 4 seconds]
+    E --> F[GET /api/groups/{id}/messages]
+    F --> G[Render latest messages]
+    G --> E
+
+    H[User posts message] --> I[POST /api/groups/{id}/message]
+    I --> J[Invalidate discussion query]
+    J --> F
+        </div>
+      </article>
+    </section>
+
+    <div class="legend">
+      Legend: Notifications are event-driven by WebSocket/STOMP. Group messages are currently near-real-time via polling.
+    </div>
+
+    <div class="note">
+      Presentation tip: Start with Section 1 for system overview, then explain Section 2 for reliability and auth, and finish with Section 3 and Section 4 to contrast real-time notifications vs polling-based group messaging.
+    </div>
+
+    <div class="footer">SkillSync Architecture Documentation | Generated on 2026-04-15</div>
+  </div>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#dbeafe',
+        primaryTextColor: '#1f2a44',
+        primaryBorderColor: '#1d4ed8',
+        lineColor: '#2f4f8f',
+        secondaryColor: '#dcfce7',
+        tertiaryColor: '#f8fafc',
+        fontFamily: 'Segoe UI, Arial, sans-serif'
+      }
+    });
+  </script>
+</body>
+</html>
