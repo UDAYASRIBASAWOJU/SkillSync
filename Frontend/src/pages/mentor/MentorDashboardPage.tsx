@@ -194,7 +194,7 @@ const MentorDashboardPage = () => {
 
       {/* Stats Row */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-2">
-        <div className="bg-surface-container-lowest rounded-3xl p-6 shadow-sm border border-outline-variant/10 flex flex-col items-center justify-center text-center">
+        <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/10 flex flex-col items-center justify-center text-center">
           <span className="text-4xl font-black text-on-surface mb-1">{totalSessionsCount}</span>
           <span className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Total Sessions</span>
         </div>

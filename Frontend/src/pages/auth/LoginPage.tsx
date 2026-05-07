@@ -153,7 +153,6 @@ const LoginPage = () => {
 
           <button 
             type="submit" 
-            onClick = {() => alert("Signed in successfully!")}
             disabled={loginMutation.isPending} 
             className="mt-6 flex items-center justify-center w-full h-12 bg-[#FFDAC1] hover:bg-[#FFDAC1]/80 text-[#191c1e] font-black rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-70 disabled:scale-100"
           >
