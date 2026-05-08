@@ -253,7 +253,7 @@ const MySessionsPage = () => {
 
                     {isMentor && session.status === 'ACCEPTED' && (
                       <button 
-                        onClick={() => alert("Are you sure?")}
+                        onClick={() => {if(confirm("Are you sure?")){handleMentorSessionAction(session.id, 'complete')}}}
                         className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shrink-0"
                       >
                         Mark Complete
