@@ -65,14 +65,24 @@ const MentorApprovalsPage = () => {
   return (
     <PageLayout>
       <div className="space-y-6">
-        <div className="bg-surface-container-lowest border border-outline-variant/10 rounded-2xl p-6 shadow-sm">
-          <h1 className="text-3xl font-extrabold text-on-surface tracking-tight">Mentor Approvals</h1>
-          <p className="text-on-surface-variant mt-2">Review and manage pending mentor applications</p>
-          {!isLoading && (
-            <p className="mt-3 text-sm font-bold text-primary bg-primary/10 inline-block px-3 py-1 rounded-full">
-              {totalElements} pending application{totalElements !== 1 ? 's' : ''}
-            </p>
-          )}
+        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-56 h-56 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
+          <div className="relative z-10 flex items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="material-symbols-outlined text-amber-100 text-xl">how_to_reg</span>
+                <span className="text-amber-100 text-xs font-bold uppercase tracking-widest">Admin · Mentor Review</span>
+              </div>
+              <h1 className="text-2xl font-extrabold tracking-tight">Mentor Approvals</h1>
+              <p className="text-amber-100 text-sm mt-0.5">Review and manage pending mentor applications</p>
+              {!isLoading && (
+                <span className="mt-2 inline-block text-xs font-bold bg-white/20 px-3 py-1 rounded-full">
+                  {totalElements} pending application{totalElements !== 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
+            <span className="material-symbols-outlined text-white/20 text-[80px] shrink-0 hidden md:block">pending_actions</span>
+          </div>
         </div>
 
         {isLoading ? (
@@ -105,7 +115,7 @@ const MentorApprovalsPage = () => {
                         {mentor.email || `User ID: ${mentor.userId}`}
                       </p>
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md bg-amber-100 text-amber-700 border border-amber-200">
+                    <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md bg-amber-500/10 text-amber-500 border border-amber-500/20">
                       Pending
                     </span>
                   </div>
@@ -131,7 +141,7 @@ const MentorApprovalsPage = () => {
                       <p className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">Skills</p>
                       <div className="flex flex-wrap gap-1.5">
                         {(mentor.skills || []).map((skill: any, index: number) => (
-                          <span key={index} className="bg-surface-container text-on-surface-variant text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider border border-outline-variant/10">
+                          <span key={index} className="bg-violet-500/10 text-violet-500 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider border border-violet-500/15">
                             {typeof skill === 'string' ? skill : skill.name || `Skill #${skill.skillId || skill.id}`}
                           </span>
                         ))}

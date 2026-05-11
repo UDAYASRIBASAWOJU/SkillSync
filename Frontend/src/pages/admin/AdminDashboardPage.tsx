@@ -142,20 +142,26 @@ const AdminDashboardPage = () => {
 
         {/* Quick Actions */}
         <div>
-          <h2 className="text-xl font-extrabold text-on-surface mb-4 tracking-tight">Quick Actions</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-xl font-extrabold text-on-surface tracking-tight">Quick Actions</h2>
+            <span className="text-[10px] font-black uppercase tracking-widest bg-violet-500/10 text-violet-500 border border-violet-500/20 px-2 py-0.5 rounded-full">
+              Admin Controls
+            </span>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {quickLinks.map((link) => (
               <button
                 key={link.path}
                 onClick={() => navigate(link.path)}
-                className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/10 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20 transition-all text-left group"
+                className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/10 hover:shadow-md hover:-translate-y-0.5 hover:border-violet-400/40 transition-all text-left group relative overflow-hidden"
               >
-                <div className={`w-12 h-12 ${link.bg} rounded-xl flex items-center justify-center mb-4`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-500/0 to-violet-500/0 group-hover:from-violet-500/5 group-hover:to-indigo-500/5 transition-all duration-300 rounded-2xl" />
+                <div className={`w-12 h-12 ${link.bg} rounded-xl flex items-center justify-center mb-4 relative z-10`}>
                   <span className={`material-symbols-outlined text-[24px] ${link.color}`}>{link.icon}</span>
                 </div>
-                <h3 className="text-lg font-extrabold text-on-surface mb-1 group-hover:text-primary transition-colors">{link.title}</h3>
-                <p className="text-sm text-on-surface-variant">{link.description}</p>
-                <div className="mt-4 flex items-center gap-1 text-sm font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                <h3 className="text-lg font-extrabold text-on-surface mb-1 group-hover:text-violet-600 transition-colors relative z-10">{link.title}</h3>
+                <p className="text-sm text-on-surface-variant relative z-10">{link.description}</p>
+                <div className="mt-4 flex items-center gap-1 text-sm font-bold text-violet-500 opacity-0 group-hover:opacity-100 transition-opacity relative z-10">
                   Open <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                 </div>
               </button>

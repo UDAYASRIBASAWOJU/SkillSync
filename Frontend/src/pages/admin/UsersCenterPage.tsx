@@ -151,11 +151,11 @@ const UsersCenterPage = () => {
   const getRoleBadgeStyle = (role: string) => {
     switch (role) {
       case 'ROLE_ADMIN':
-        return 'bg-red-100 text-red-700 border-red-200';
+        return 'bg-red-500/10 text-red-500 border-red-500/20';
       case 'ROLE_MENTOR':
-        return 'bg-purple-100 text-purple-700 border-purple-200';
+        return 'bg-violet-500/10 text-violet-500 border-violet-500/20';
       default:
-        return 'bg-blue-100 text-blue-700 border-blue-200';
+        return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
     }
   };
 
@@ -167,9 +167,19 @@ const UsersCenterPage = () => {
     <PageLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div className="bg-surface-container-lowest border border-outline-variant/10 rounded-2xl p-6 shadow-sm">
-          <h1 className="text-3xl font-extrabold text-on-surface tracking-tight">Manage Users</h1>
-          <p className="text-on-surface-variant mt-2">View, filter, search, and manage all platform users</p>
+        <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-56 h-56 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
+          <div className="relative z-10 flex items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="material-symbols-outlined text-violet-200 text-xl">manage_accounts</span>
+                <span className="text-violet-200 text-xs font-bold uppercase tracking-widest">Admin · User Management</span>
+              </div>
+              <h1 className="text-2xl font-extrabold tracking-tight">Manage Users</h1>
+              <p className="text-violet-100 text-sm mt-0.5">View, filter, search, and manage all platform users</p>
+            </div>
+            <span className="material-symbols-outlined text-white/20 text-[80px] shrink-0 hidden md:block">group</span>
+          </div>
         </div>
 
         {/* Controls */}
