@@ -100,25 +100,25 @@ const AdminSkillsPage = () => {
   return (
     <PageLayout>
       <div className="space-y-6">
-        <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
+        <div className="bg-gradient-to-r from-pink-600 via-rose-600 to-fuchsia-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 w-56 h-56 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
           <div className="relative z-10 flex items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="material-symbols-outlined text-emerald-100 text-xl">psychology</span>
-                <span className="text-emerald-100 text-xs font-bold uppercase tracking-widest">Admin · Skills Library</span>
+                <span className="material-symbols-outlined text-pink-200 text-lg">psychology</span>
+                <span className="text-pink-200 text-[11px] font-bold uppercase tracking-widest">Admin · Skills Library</span>
               </div>
               <h1 className="text-2xl font-extrabold tracking-tight">Manage Skills</h1>
-              <p className="text-emerald-100 text-sm mt-0.5">Add and manage platform skills for mentors to select</p>
-              <span className="mt-2 inline-block text-xs font-bold bg-white/20 px-3 py-1 rounded-full">{totalElements} skills</span>
+              <p className="text-pink-100 text-sm mt-0.5">Add and manage platform skills for mentors to select</p>
+              <span className="mt-2 inline-block text-[11px] font-bold bg-white/20 px-2.5 py-0.5 rounded-full">{totalElements} skills</span>
             </div>
-            <span className="material-symbols-outlined text-white/20 text-[80px] shrink-0 hidden md:block">hub</span>
+            <span className="material-symbols-outlined text-white/15 text-[72px] shrink-0 hidden md:block">hub</span>
           </div>
         </div>
 
-        <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border-l-4 border-violet-500 border border-outline-variant/10">
-          <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-violet-500 text-[20px]">add_circle</span> Add New Skill
+        <div className="bg-surface-container-lowest p-5 rounded-xl shadow-sm border-l-4 border-pink-500 border border-outline-variant/10">
+          <h2 className="text-base font-bold mb-3 flex items-center gap-2">
+            <span className="material-symbols-outlined text-pink-500 text-[18px]">add_circle</span> Add New Skill
           </h2>
           <form onSubmit={handleAddSkill} className="flex flex-col md:flex-row gap-4">
             <input
@@ -156,7 +156,7 @@ const AdminSkillsPage = () => {
                 return (
                   <div
                     key={skill.id}
-                  className="p-4 border-l-4 border-violet-400/60 border border-outline-variant/15 rounded-xl bg-surface-container-lowest flex flex-col gap-3 hover:shadow-sm transition-shadow"
+                  className="p-3 border-l-4 border-pink-400/60 border border-outline-variant/15 rounded-xl bg-surface-container-lowest flex flex-col gap-2 hover:shadow-sm transition-shadow"
                   >
                     <div>
                       <p className="font-bold text-on-surface">{skill.name}</p>

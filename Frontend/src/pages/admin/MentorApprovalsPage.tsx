@@ -65,23 +65,23 @@ const MentorApprovalsPage = () => {
   return (
     <PageLayout>
       <div className="space-y-6">
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
+        <div className="bg-gradient-to-r from-pink-600 via-rose-600 to-fuchsia-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 w-56 h-56 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
           <div className="relative z-10 flex items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="material-symbols-outlined text-amber-100 text-xl">how_to_reg</span>
-                <span className="text-amber-100 text-xs font-bold uppercase tracking-widest">Admin · Mentor Review</span>
+                <span className="material-symbols-outlined text-pink-200 text-lg">how_to_reg</span>
+                <span className="text-pink-200 text-[11px] font-bold uppercase tracking-widest">Admin · Mentor Review</span>
               </div>
               <h1 className="text-2xl font-extrabold tracking-tight">Mentor Approvals</h1>
-              <p className="text-amber-100 text-sm mt-0.5">Review and manage pending mentor applications</p>
+              <p className="text-pink-100 text-sm mt-0.5">Review and manage pending mentor applications</p>
               {!isLoading && (
-                <span className="mt-2 inline-block text-xs font-bold bg-white/20 px-3 py-1 rounded-full">
+                <span className="mt-2 inline-block text-[11px] font-bold bg-white/20 px-2.5 py-0.5 rounded-full">
                   {totalElements} pending application{totalElements !== 1 ? 's' : ''}
                 </span>
               )}
             </div>
-            <span className="material-symbols-outlined text-white/20 text-[80px] shrink-0 hidden md:block">pending_actions</span>
+            <span className="material-symbols-outlined text-white/15 text-[72px] shrink-0 hidden md:block">pending_actions</span>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ const MentorApprovalsPage = () => {
                         {mentor.email || `User ID: ${mentor.userId}`}
                       </p>
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                    <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md bg-pink-500/10 text-pink-500 border border-pink-500/20">
                       Pending
                     </span>
                   </div>
@@ -141,7 +141,7 @@ const MentorApprovalsPage = () => {
                       <p className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">Skills</p>
                       <div className="flex flex-wrap gap-1.5">
                         {(mentor.skills || []).map((skill: any, index: number) => (
-                          <span key={index} className="bg-violet-500/10 text-violet-500 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider border border-violet-500/15">
+                          <span key={index} className="bg-pink-500/10 text-pink-500 text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider border border-pink-500/15">
                             {typeof skill === 'string' ? skill : skill.name || `Skill #${skill.skillId || skill.id}`}
                           </span>
                         ))}

@@ -20,12 +20,7 @@ const AdminDashboardPage = () => {
         const res = await api.get('/api/admin/stats');
         return res.data as AdminStats;
       } catch {
-        return {
-          totalUsers: 0,
-          totalMentors: 0,
-          totalSessions: 0,
-          pendingMentorApprovals: 0,
-        } as AdminStats;
+        return { totalUsers: 0, totalMentors: 0, totalSessions: 0, pendingMentorApprovals: 0 } as AdminStats;
       }
     },
     staleTime: 30_000,
@@ -35,106 +30,60 @@ const AdminDashboardPage = () => {
     return (
       <PageLayout>
         <div className="flex items-center justify-center h-screen">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-pink-500"></div>
         </div>
       </PageLayout>
     );
   }
 
   const statCards = [
-    {
-      label: 'Total Users',
-      value: stats?.totalUsers ?? 0,
-      icon: 'group',
-      border: 'border-l-blue-500',
-      iconBg: 'bg-blue-500/10',
-      iconColor: 'text-blue-500',
-    },
-    {
-      label: 'Approved Mentors',
-      value: stats?.totalMentors ?? 0,
-      icon: 'school',
-      border: 'border-l-violet-500',
-      iconBg: 'bg-violet-500/10',
-      iconColor: 'text-violet-500',
-    },
-    {
-      label: 'Total Sessions',
-      value: stats?.totalSessions ?? 0,
-      icon: 'event',
-      border: 'border-l-emerald-500',
-      iconBg: 'bg-emerald-500/10',
-      iconColor: 'text-emerald-500',
-    },
-    {
-      label: 'Pending Approvals',
-      value: stats?.pendingMentorApprovals ?? 0,
-      icon: 'pending_actions',
-      border: 'border-l-amber-500',
-      iconBg: 'bg-amber-500/10',
-      iconColor: 'text-amber-500',
-    },
+    { label: 'Total Users',        value: stats?.totalUsers ?? 0,             icon: 'group',           border: 'border-l-pink-500',   iconBg: 'bg-pink-500/10',   iconColor: 'text-pink-500' },
+    { label: 'Approved Mentors',   value: stats?.totalMentors ?? 0,           icon: 'school',          border: 'border-l-rose-500',   iconBg: 'bg-rose-500/10',   iconColor: 'text-rose-500' },
+    { label: 'Total Sessions',     value: stats?.totalSessions ?? 0,          icon: 'event',           border: 'border-l-fuchsia-500',iconBg: 'bg-fuchsia-500/10',iconColor: 'text-fuchsia-500' },
+    { label: 'Pending Approvals',  value: stats?.pendingMentorApprovals ?? 0, icon: 'pending_actions', border: 'border-l-amber-500',  iconBg: 'bg-amber-500/10',  iconColor: 'text-amber-500' },
   ];
 
   const quickLinks = [
-    {
-      title: 'Manage Users',
-      description: 'View, search, filter, and manage all platform users',
-      icon: 'manage_accounts',
-      path: '/admin/users',
-      color: 'text-blue-600',
-      bg: 'bg-blue-100',
-    },
-    {
-      title: 'Mentor Approvals',
-      description: 'Review and approve/reject pending mentor applications',
-      icon: 'how_to_reg',
-      path: '/admin/mentor-approvals',
-      color: 'text-purple-600',
-      bg: 'bg-purple-100',
-    },
-    {
-      title: 'Manage Skills',
-      description: 'Add and manage platform skills for mentors',
-      icon: 'psychology',
-      path: '/admin/skills',
-      color: 'text-emerald-600',
-      bg: 'bg-emerald-100',
-    },
-    {
-      title: 'Manage Groups',
-      description: 'Create groups, edit group settings, and remove members',
-      icon: 'groups',
-      path: '/admin/groups',
-      color: 'text-cyan-700',
-      bg: 'bg-cyan-100',
-    },
+    { title: 'Manage Users',     description: 'View, search, filter, and manage all platform users',          icon: 'manage_accounts', path: '/admin/users',             color: 'text-pink-600',    bg: 'bg-pink-500/10' },
+    { title: 'Mentor Approvals', description: 'Review and approve/reject pending mentor applications',        icon: 'how_to_reg',      path: '/admin/mentor-approvals',  color: 'text-rose-600',    bg: 'bg-rose-500/10' },
+    { title: 'Manage Skills',    description: 'Add and manage platform skills for mentors',                   icon: 'psychology',      path: '/admin/skills',            color: 'text-fuchsia-600', bg: 'bg-fuchsia-500/10' },
+    { title: 'Manage Groups',    description: 'Create groups, edit group settings, and remove members',       icon: 'groups',          path: '/admin/groups',            color: 'text-pink-700',    bg: 'bg-pink-700/10' },
   ];
 
   return (
     <PageLayout>
-      <div className="space-y-8">
+      <div className="space-y-6">
+
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl -ml-10 -mb-10"></div>
-          <h1 className="text-3xl font-extrabold mb-2 relative z-10">Admin Dashboard</h1>
-          <p className="text-purple-100 text-lg relative z-10">System overview and management tools</p>
+        <div className="bg-gradient-to-r from-pink-600 via-rose-600 to-fuchsia-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20" />
+          <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full blur-2xl -ml-10 -mb-10" />
+          <div className="relative z-10 flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="material-symbols-outlined text-pink-200 text-lg">admin_panel_settings</span>
+                <span className="text-pink-200 text-[11px] font-bold uppercase tracking-widest">Admin Portal</span>
+              </div>
+              <h1 className="text-2xl font-extrabold tracking-tight mb-0.5">Admin Dashboard</h1>
+              <p className="text-pink-100 text-sm">System overview and platform management tools</p>
+            </div>
+            <span className="material-symbols-outlined text-white/15 text-[72px] shrink-0 hidden md:block">shield</span>
+          </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Stats Cards — compact */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {statCards.map((card) => (
             <div
               key={card.label}
-              className={`bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 ${card.border} border border-outline-variant/10 hover:shadow-md transition-all hover:-translate-y-0.5 flex items-center gap-4`}
+              className={`bg-surface-container-lowest rounded-xl p-4 shadow-sm border-l-4 ${card.border} border border-outline-variant/10 hover:shadow-md transition-all hover:-translate-y-0.5 flex items-center gap-3`}
             >
-              <div className={`w-12 h-12 ${card.iconBg} rounded-xl flex items-center justify-center shrink-0`}>
-                <span className={`material-symbols-outlined text-[24px] ${card.iconColor}`}>{card.icon}</span>
+              <div className={`w-10 h-10 ${card.iconBg} rounded-lg flex items-center justify-center shrink-0`}>
+                <span className={`material-symbols-outlined text-[20px] ${card.iconColor}`}>{card.icon}</span>
               </div>
               <div>
-                <p className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-0.5">{card.label}</p>
-                <p className="text-3xl font-black text-on-surface">{card.value}</p>
+                <p className="text-[9px] font-black text-on-surface-variant uppercase tracking-widest">{card.label}</p>
+                <p className="text-2xl font-black text-on-surface leading-tight">{card.value}</p>
               </div>
             </div>
           ))}
@@ -142,27 +91,27 @@ const AdminDashboardPage = () => {
 
         {/* Quick Actions */}
         <div>
-          <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-xl font-extrabold text-on-surface tracking-tight">Quick Actions</h2>
-            <span className="text-[10px] font-black uppercase tracking-widest bg-violet-500/10 text-violet-500 border border-violet-500/20 px-2 py-0.5 rounded-full">
+          <div className="flex items-center gap-2 mb-3">
+            <h2 className="text-lg font-extrabold text-on-surface tracking-tight">Quick Actions</h2>
+            <span className="text-[9px] font-black uppercase tracking-widest bg-pink-500/10 text-pink-500 border border-pink-500/20 px-2 py-0.5 rounded-full">
               Admin Controls
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {quickLinks.map((link) => (
               <button
                 key={link.path}
                 onClick={() => navigate(link.path)}
-                className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/10 hover:shadow-md hover:-translate-y-0.5 hover:border-violet-400/40 transition-all text-left group relative overflow-hidden"
+                className="bg-surface-container-lowest rounded-xl p-5 shadow-sm border border-outline-variant/10 hover:shadow-md hover:-translate-y-0.5 hover:border-pink-400/40 transition-all text-left group relative overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-500/0 to-violet-500/0 group-hover:from-violet-500/5 group-hover:to-indigo-500/5 transition-all duration-300 rounded-2xl" />
-                <div className={`w-12 h-12 ${link.bg} rounded-xl flex items-center justify-center mb-4 relative z-10`}>
-                  <span className={`material-symbols-outlined text-[24px] ${link.color}`}>{link.icon}</span>
+                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/0 group-hover:from-pink-500/5 group-hover:to-rose-500/5 transition-all duration-300 rounded-xl" />
+                <div className={`w-10 h-10 ${link.bg} rounded-lg flex items-center justify-center mb-3 relative z-10`}>
+                  <span className={`material-symbols-outlined text-[20px] ${link.color}`}>{link.icon}</span>
                 </div>
-                <h3 className="text-lg font-extrabold text-on-surface mb-1 group-hover:text-violet-600 transition-colors relative z-10">{link.title}</h3>
-                <p className="text-sm text-on-surface-variant relative z-10">{link.description}</p>
-                <div className="mt-4 flex items-center gap-1 text-sm font-bold text-violet-500 opacity-0 group-hover:opacity-100 transition-opacity relative z-10">
-                  Open <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                <h3 className="text-base font-extrabold text-on-surface mb-0.5 group-hover:text-pink-600 transition-colors relative z-10">{link.title}</h3>
+                <p className="text-xs text-on-surface-variant relative z-10 leading-relaxed">{link.description}</p>
+                <div className="mt-3 flex items-center gap-1 text-xs font-bold text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity relative z-10">
+                  Open <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </div>
               </button>
             ))}

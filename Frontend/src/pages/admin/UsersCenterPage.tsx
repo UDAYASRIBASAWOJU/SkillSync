@@ -167,18 +167,18 @@ const UsersCenterPage = () => {
     <PageLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
+        <div className="bg-gradient-to-r from-pink-600 via-rose-600 to-fuchsia-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 w-56 h-56 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
           <div className="relative z-10 flex items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="material-symbols-outlined text-violet-200 text-xl">manage_accounts</span>
-                <span className="text-violet-200 text-xs font-bold uppercase tracking-widest">Admin · User Management</span>
+                <span className="material-symbols-outlined text-pink-200 text-lg">manage_accounts</span>
+                <span className="text-pink-200 text-[11px] font-bold uppercase tracking-widest">Admin · User Management</span>
               </div>
               <h1 className="text-2xl font-extrabold tracking-tight">Manage Users</h1>
-              <p className="text-violet-100 text-sm mt-0.5">View, filter, search, and manage all platform users</p>
+              <p className="text-pink-100 text-sm mt-0.5">View, filter, search, and manage all platform users</p>
             </div>
-            <span className="material-symbols-outlined text-white/20 text-[80px] shrink-0 hidden md:block">group</span>
+            <span className="material-symbols-outlined text-white/15 text-[72px] shrink-0 hidden md:block">group</span>
           </div>
         </div>
 
