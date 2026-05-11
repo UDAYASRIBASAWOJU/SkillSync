@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import PageLayout from '../../components/layout/PageLayout';
@@ -12,9 +12,6 @@ const MentorDashboardPage = () => {
   const { showToast } = useToast();
   const navigate = useNavigate();
   const { requestConfirmation } = useActionConfirm();
-
-  // For Inline Reject Confirm
-  const [rejectingId, setRejectingId] = useState<number | null>(null);
 
   // Fetch Mentor Profile to get mentorId and rating
   const { data: mentorData } = useQuery({
@@ -63,7 +60,6 @@ const MentorDashboardPage = () => {
     mutationFn: async (id: number) => api.put(`/api/sessions/${id}/reject`, undefined, { _skipErrorRedirect: true } as any),
     onSuccess: () => {
       showToast({ message: 'Session rejected.', type: 'success' });
-      setRejectingId(null);
       queryClient.invalidateQueries({ queryKey: ['sessions'] });
     }
   });
