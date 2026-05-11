@@ -6,6 +6,9 @@ import mentorsReducer, {
   setSelectedMentor,
   setMyMentorProfile,
   setMentorsLoading,
+  setMentorsError,
+  setMentorsTotalElements,
+  setMentorsPage,
   setMentorsFilters,
   clearMentorsFilters,
 } from '../../store/slices/mentorsSlice';

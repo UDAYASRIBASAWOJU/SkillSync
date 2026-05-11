@@ -51,15 +51,15 @@ const Sidebar = ({ role }: SidebarProps) => {
     });
     if (!confirmed) return;
 
-    try {
-      await api.post('/api/auth/logout');
-    } catch (e) {
-      console.warn('Logout request failed cleanly', e);
-    } finally {
-      dispatch(logout());
-      localStorage.clear();
-      navigate('/login');
-    }
+    // Eagerly logout on the client side for instant feedback
+    dispatch(logout());
+    localStorage.clear();
+    navigate('/login');
+
+    // Fire and forget the server-side logout
+    api.post('/api/auth/logout').catch((e) => {
+      console.warn('Server-side logout request failed or was aborted', e);
+    });
   };
 
   return (
