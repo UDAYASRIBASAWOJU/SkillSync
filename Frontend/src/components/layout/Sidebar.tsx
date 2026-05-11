@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
-import type { RootState } from '../../store';
+
 import api from '../../services/axios';
 import { useActionConfirm } from '../../components/ui/ActionConfirm';
 
@@ -13,7 +13,6 @@ const Sidebar = ({ role }: SidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const sidebarOpen = useSelector((state: RootState) => state.ui.sidebarOpen);
   const { requestConfirmation } = useActionConfirm();
 
   const learnerNav = [
@@ -64,16 +63,13 @@ const Sidebar = ({ role }: SidebarProps) => {
   };
 
   return (
-    <aside className={`fixed left-0 top-0 h-screen bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] flex flex-col justify-between z-40 transition-all duration-300 shadow-xl ${sidebarOpen ? 'w-20 lg:w-64 translate-x-0' : 'w-0 -translate-x-full lg:w-0 overflow-hidden'}`}>
-      <div className="flex flex-col flex-1 overflow-y-auto w-full scrollbar-hide">
-        {/* Empty space for Navbar alignment */}
-        <div className="h-16 shrink-0 border-b border-black/5" />
- 
+    <nav className="w-full bg-[var(--sidebar-bg)] border-b border-[var(--sidebar-border)] shadow-sm shrink-0 overflow-x-auto scrollbar-hide z-20">
+      <div className="flex items-center px-4 lg:px-8 min-w-max">
         {/* NAVIGATION LINKS */}
-        <nav className="flex-1 w-full px-2 lg:px-4 py-8 space-y-2">
+        <div className="flex flex-1 items-center gap-1 lg:gap-2 py-2">
           {activeNav.map((item) => {
             const isActive = location.pathname === item.path;
-            const linkClasses = `flex items-center justify-center lg:justify-start px-2 lg:px-4 py-3 rounded-xl transition-all duration-200 group ${
+            const linkClasses = `flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-200 group ${
               isActive 
                 ? 'bg-[var(--sidebar-active-bg)] text-[var(--sidebar-text)] shadow-sm font-extrabold' 
                 : 'text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] font-semibold'
@@ -81,34 +77,35 @@ const Sidebar = ({ role }: SidebarProps) => {
  
             return (
               <Link key={item.name} to={item.path} className={linkClasses}>
-                <span className={`material-symbols-outlined text-2xl transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
+                <span className={`material-symbols-outlined text-[20px] transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
                   {item.icon}
                 </span>
-                <span className="hidden lg:inline ml-4 text-sm whitespace-nowrap">{item.name}</span>
+                <span className="text-sm whitespace-nowrap">{item.name}</span>
               </Link>
             );
           })}
-        </nav>
+        </div>
+ 
+        {/* DIVIDER */}
+        <div className="w-px h-8 bg-outline-variant/30 mx-4 shrink-0" />
+ 
+        {/* BOTTOM SECTION (Now on the right) */}
+        <div className="flex items-center gap-1 lg:gap-2 shrink-0 py-2">
+          <Link to="/help" className="flex items-center gap-2 px-4 py-2.5 rounded-full text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] transition-all duration-200 group">
+            <span className="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">help</span>
+            <span className="text-sm font-semibold whitespace-nowrap">Help Center</span>
+          </Link>
+   
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full text-[#ba1a1a] hover:bg-[#ba1a1a]/10 transition-all duration-200 group"
+          >
+            <span className="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">logout</span>
+            <span className="text-sm font-semibold whitespace-nowrap">Logout</span>
+          </button>
+        </div>
       </div>
- 
-      {/* BOTTOM SECTION */}
-      <div className="w-full shrink-0 p-2 lg:p-4 border-t border-[var(--sidebar-border)] flex flex-col gap-2">
- 
-
-        <Link to="/help" className="w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 h-12 rounded-xl text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] transition-all duration-200 group">
-          <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">help</span>
-          <span className="hidden lg:inline ml-4 text-sm font-semibold whitespace-nowrap">Help Center</span>
-        </Link>
- 
-        <button 
-          onClick={handleLogout}
-          className="w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 h-12 rounded-xl text-[#ba1a1a] hover:bg-[#ba1a1a]/10 transition-all duration-200 group"
-        >
-          <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">logout</span>
-          <span className="hidden lg:inline ml-4 text-sm font-semibold whitespace-nowrap">Logout</span>
-        </button>
-      </div>
-    </aside>
+    </nav>
   );
 };
 

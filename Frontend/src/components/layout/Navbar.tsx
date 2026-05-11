@@ -6,6 +6,7 @@ import api from '../../services/axios';
 import notificationService from '../../services/notificationService';
 import type { RootState } from '../../store';
 import ThemeToggleButton from '../ui/ThemeToggleButton';
+import logo from '../../assets/skillsync-logo.png';
 
 const Navbar = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -48,11 +49,21 @@ const Navbar = () => {
   const colorIndex = (initial1.charCodeAt(0) % colors.length);
   const avatarClass = colors[colorIndex] || 'bg-primary';
 
+  const role = useSelector((state: RootState) => state.auth.role);
+  const activeRole = role || 'ROLE_LEARNER';
+  const roleLabel = activeRole.replace('ROLE_', '');
+
   return (
-    <header className="h-16 w-full glass-nav bg-[var(--navbar-bg)]/80 border-b border-[var(--sidebar-border)] flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0 transition-all">
+    <header className="h-16 w-full glass-nav bg-[var(--navbar-bg)] border-b border-[var(--sidebar-border)] flex items-center justify-between px-4 lg:px-8 z-30 shrink-0">
       <div className="flex-1 flex items-center gap-4">
-        {/* Spacer for Fixed Branding */}
-        <div className="w-20 lg:w-64 shrink-0 transition-all transform -translate-x-4 lg:-translate-x-8" />
+        {/* Branding */}
+        <Link to="/" className="flex items-center gap-3 mr-6">
+          <img src={logo} alt="SkillSync logo" className="w-9 h-9 object-contain drop-shadow-sm" onError={(e: any) => { e.target.src = 'https://via.placeholder.com/36'; }} />
+          <div className="flex flex-col">
+            <span className="text-xl font-black text-on-surface tracking-tight leading-none mb-0.5">SkillSync</span>
+            <span className="text-[10px] font-extrabold text-primary uppercase tracking-widest leading-none">{roleLabel}</span>
+          </div>
+        </Link>
       </div>
 
       <div className="flex items-center space-x-4 text-on-surface">
