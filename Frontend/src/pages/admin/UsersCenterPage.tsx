@@ -167,18 +167,18 @@ const UsersCenterPage = () => {
     <PageLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-600 via-rose-600 to-fuchsia-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-56 h-56 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
-          <div className="relative z-10 flex items-center justify-between gap-4">
+        <div className="w-1/2 bg-gradient-to-r from-rose-100 via-pink-100 to-orange-50 rounded-xl p-5 relative overflow-hidden border border-rose-200/60 shadow-sm">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-pink-200/30 rounded-full blur-2xl -mr-8 -mt-8" />
+          <div className="relative z-10 flex items-center justify-between gap-3">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="material-symbols-outlined text-pink-200 text-lg">manage_accounts</span>
-                <span className="text-pink-200 text-[11px] font-bold uppercase tracking-widest">Admin · User Management</span>
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="material-symbols-outlined text-pink-400 text-base">manage_accounts</span>
+                <span className="text-pink-500 text-[10px] font-bold uppercase tracking-widest">Admin · User Management</span>
               </div>
-              <h1 className="text-2xl font-extrabold tracking-tight">Manage Users</h1>
-              <p className="text-pink-100 text-sm mt-0.5">View, filter, search, and manage all platform users</p>
+              <h1 className="text-xl font-extrabold tracking-tight text-rose-900">Manage Users</h1>
+              <p className="text-rose-600 text-xs mt-0.5">View, filter, search, and manage all platform users</p>
             </div>
-            <span className="material-symbols-outlined text-white/15 text-[72px] shrink-0 hidden md:block">group</span>
+            <span className="material-symbols-outlined text-pink-200 text-[52px] shrink-0 hidden md:block">group</span>
           </div>
         </div>
 

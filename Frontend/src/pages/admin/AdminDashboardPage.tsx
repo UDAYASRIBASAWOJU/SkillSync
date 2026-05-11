@@ -55,19 +55,18 @@ const AdminDashboardPage = () => {
       <div className="space-y-6">
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-600 via-rose-600 to-fuchsia-600 rounded-2xl p-7 text-white shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20" />
-          <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full blur-2xl -ml-10 -mb-10" />
+        <div className="w-1/2 bg-gradient-to-r from-rose-100 via-pink-100 to-orange-50 rounded-xl p-5 relative overflow-hidden border border-rose-200/60 shadow-sm">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-pink-200/30 rounded-full blur-2xl -mr-8 -mt-8" />
           <div className="relative z-10 flex items-center justify-between">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="material-symbols-outlined text-pink-200 text-lg">admin_panel_settings</span>
-                <span className="text-pink-200 text-[11px] font-bold uppercase tracking-widest">Admin Portal</span>
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="material-symbols-outlined text-pink-400 text-base">admin_panel_settings</span>
+                <span className="text-pink-500 text-[10px] font-bold uppercase tracking-widest">Admin Portal</span>
               </div>
-              <h1 className="text-2xl font-extrabold tracking-tight mb-0.5">Admin Dashboard</h1>
-              <p className="text-pink-100 text-sm">System overview and platform management tools</p>
+              <h1 className="text-xl font-extrabold tracking-tight text-rose-900 mb-0.5">Admin Dashboard</h1>
+              <p className="text-rose-600 text-xs">System overview and platform management tools</p>
             </div>
-            <span className="material-symbols-outlined text-white/15 text-[72px] shrink-0 hidden md:block">shield</span>
+            <span className="material-symbols-outlined text-pink-200 text-[52px] shrink-0 hidden md:block">shield</span>
           </div>
         </div>
 
