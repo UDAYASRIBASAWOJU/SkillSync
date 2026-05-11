@@ -143,21 +143,49 @@ const MentorDashboardPage = () => {
         )}
       </div>
 
-      {/* Mark Sessions Complete Helper */}
-      {mentorId && (
-        <div className="bg-primary/5 p-6 rounded-2xl shadow-sm border border-primary/20">
-          <h3 className="font-bold text-lg text-primary mb-2 flex items-center gap-2">
-            <span className="material-symbols-outlined">event_available</span> Availability
-          </h3>
-          <p className="text-xs text-on-surface-variant font-medium mb-4 leading-relaxed">
-            Manage your weekly availability from the dedicated page. Keep this dashboard focused on bookings and reviews.
-          </p>
-          <button
-            onClick={() => navigate('/mentor/availability')}
-            className="w-full gradient-btn text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:shadow-md transition-all active:scale-95"
-          >
-            Open Availability Manager
-          </button>
+      {/* Action Required — Pending Requests */}
+      {pendingRequests.length > 0 && (
+        <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-amber-500/20">
+          <div className="flex items-center gap-3 mb-4">
+            <h3 className="font-bold text-lg text-on-surface">Action Required</h3>
+            <span className="bg-error text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              {pendingRequestsCount} Pending
+            </span>
+          </div>
+          <div className="space-y-3">
+            {pendingRequests.map((req: any) => (
+              <div key={req.id} className="flex flex-col gap-3 p-3 bg-amber-50/60 rounded-xl border border-amber-200/40">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                    {getInitials(getSessionDisplayName(req))}
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-on-surface leading-tight">{getSessionDisplayName(req)}</p>
+                    <p className="text-xs text-on-surface-variant mt-0.5">{getSessionDateTimeLabel(req)}</p>
+                  </div>
+                </div>
+                {rejectingId === req.id ? (
+                  <div className="flex items-center gap-2 bg-error/10 p-2 rounded-lg">
+                    <span className="text-xs font-bold text-error mr-1">Confirm?</span>
+                    <button onClick={() => rejectMutation.mutate(req.id)} disabled={rejectMutation.isPending} className="text-xs font-bold bg-error text-white px-3 py-1 rounded-md hover:bg-error/90 transition-colors">Yes</button>
+                    <button onClick={() => setRejectingId(null)} className="text-xs font-bold text-on-surface-variant hover:text-on-surface px-2 py-1">No</button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setRejectingId(req.id)}
+                      className="flex-1 bg-surface-container hover:bg-surface-container-high text-on-surface px-3 py-1.5 rounded-lg text-xs font-bold border border-outline-variant/10 transition-colors"
+                    >Reject</button>
+                    <button
+                      onClick={() => acceptMutation.mutate(req.id)}
+                      disabled={acceptMutation.isPending}
+                      className="flex-1 gradient-btn text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all active:scale-95 disabled:opacity-50"
+                    >Accept</button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -213,68 +241,25 @@ const MentorDashboardPage = () => {
         </div>
       </section>
 
-      {/* Pending Requests */}
-      <section className="mb-4">
-        <div className="flex items-center gap-3 mb-4">
-          <h2 className="text-xl font-bold text-on-surface">Action Required</h2>
-          {pendingRequestsCount > 0 && (
-            <span className="bg-error text-white text-xs font-bold px-2 py-0.5 rounded-full">{pendingRequestsCount} Pending</span>
-          )}
-        </div>
-
-        <div className="space-y-4">
-          {pendingRequests.length > 0 ? (
-            pendingRequests.map((req: any) => (
-              <div key={req.id} className="bg-surface-container-lowest rounded-xl p-5 shadow-sm border border-amber-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
-                    {getInitials(getSessionDisplayName(req))}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-on-surface leading-tight text-lg">{getSessionDisplayName(req)}</h4>
-                    <p className="text-xs font-semibold text-on-surface-variant mt-0.5 flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">calendar_today</span>
-                      {getSessionDateTimeLabel(req)} ({req.durationMinutes || 60} min)
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 self-end md:self-auto">
-                  {rejectingId === req.id ? (
-                    <div className="flex items-center gap-2 bg-error/10 p-2 rounded-lg py-1 px-3">
-                      <span className="text-xs font-bold text-error mr-2">Confirm?</span>
-                      <button onClick={() => rejectMutation.mutate(req.id)} disabled={rejectMutation.isPending} className="text-xs font-bold bg-error text-white px-3 py-1.5 rounded-md hover:bg-error/90 transition-colors shadow-sm">Yes</button>
-                      <button onClick={() => setRejectingId(null)} className="text-xs font-bold text-on-surface-variant hover:text-on-surface px-2 py-1.5">No</button>
-                    </div>
-                  ) : (
-                    <>
-                      <button 
-                        onClick={() => setRejectingId(req.id)}
-                        className="bg-surface-container hover:bg-surface-container-high text-on-surface px-5 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors border border-outline-variant/10"
-                      >
-                        Reject
-                      </button>
-                      <button 
-                        onClick={() => acceptMutation.mutate(req.id)}
-                        disabled={acceptMutation.isPending}
-                        className="gradient-btn text-white px-5 py-2 rounded-lg text-sm font-bold shadow-sm hover:shadow-md transition-all active:scale-95 disabled:opacity-50"
-                      >
-                        Accept Request
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="bg-emerald-50 border border-emerald-200/50 rounded-xl p-8 text-center flex flex-col items-center">
-              <span className="material-symbols-outlined text-4xl text-emerald-500 mb-3">check_circle</span>
-              <p className="font-bold text-emerald-800">You're all caught up!</p>
-              <p className="text-sm text-emerald-600/80 font-medium">No pending requests require your attention right now.</p>
-            </div>
-          )}
-        </div>
-      </section>
+      {/* Availability Manager */}
+      {mentorId && (
+        <section className="mb-4">
+          <div className="bg-primary/5 p-6 rounded-2xl shadow-sm border border-primary/20">
+            <h2 className="text-xl font-bold text-primary mb-2 flex items-center gap-2">
+              <span className="material-symbols-outlined">event_available</span> Availability Manager
+            </h2>
+            <p className="text-sm text-on-surface-variant font-medium mb-4 leading-relaxed">
+              Manage your weekly availability from the dedicated page. Keep this dashboard focused on bookings and reviews.
+            </p>
+            <button
+              onClick={() => navigate('/mentor/availability')}
+              className="gradient-btn text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:shadow-md transition-all active:scale-95"
+            >
+              Open Availability Manager
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* Upcoming Sessions */}
       <section className="mb-4">
