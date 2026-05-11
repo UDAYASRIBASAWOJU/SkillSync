@@ -157,6 +157,22 @@ const LearnerDashboardPage = () => {
 
   const rightPanel = (
     <>
+      {/* Find a Mentor */}
+      <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+        <h3 className="font-bold text-lg text-on-surface mb-2 flex items-center gap-2">
+          <span className="material-symbols-outlined text-primary">person_search</span> Find a Mentor
+        </h3>
+        <p className="text-xs text-on-surface-variant font-medium mb-4 leading-relaxed">
+          Browse verified mentors, check their availability, and book a session that fits your schedule.
+        </p>
+        <button
+          onClick={() => navigate('/mentors')}
+          className="w-full gradient-btn text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:shadow-md transition-all active:scale-95"
+        >
+          Browse Mentors
+        </button>
+      </div>
+
       {/* My Groups */}
       <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
         <h3 className="font-bold text-lg text-on-surface mb-4">My Groups</h3>
