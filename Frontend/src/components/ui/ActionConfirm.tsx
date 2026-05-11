@@ -32,30 +32,40 @@ const DEFAULT_OPTIONS: Omit<InternalConfirmOptions, 'message'> = {
   variant: 'danger',
 };
 
-const variantStyles: Record<ConfirmVariant, { icon: string; iconColor: string; confirmBtn: string; headerAccent: string }> = {
+/* ─── Variant config ────────────────────────────────────────────────────────
+   accentBar  → thin top-border stripe (always visible, no bg tint needed)
+   iconColor  → icon colour that works on any surface
+   confirmBtn → button classes (explicit colour, never depends on surface)
+   ─────────────────────────────────────────────────────────────────────── */
+const variantStyles: Record<ConfirmVariant, {
+  icon: string;
+  iconColor: string;
+  confirmBtn: string;
+  accentBar: string;
+}> = {
   danger: {
     icon: 'warning',
-    iconColor: 'text-error',
-    confirmBtn: 'bg-error hover:bg-error/90 text-white',
-    headerAccent: 'border-error/20 bg-error/5',
+    iconColor: 'text-red-500',
+    confirmBtn: 'bg-red-600 hover:bg-red-700 text-white',
+    accentBar: 'bg-red-500',
   },
   warning: {
     icon: 'error_outline',
-    iconColor: 'text-amber-500',
+    iconColor: 'text-amber-400',
     confirmBtn: 'bg-amber-500 hover:bg-amber-600 text-white',
-    headerAccent: 'border-amber-200/40 bg-amber-50/60',
+    accentBar: 'bg-amber-400',
   },
   success: {
     icon: 'check_circle',
-    iconColor: 'text-emerald-500',
+    iconColor: 'text-emerald-400',
     confirmBtn: 'bg-emerald-500 hover:bg-emerald-600 text-white',
-    headerAccent: 'border-emerald-200/40 bg-emerald-50/60',
+    accentBar: 'bg-emerald-500',
   },
   info: {
     icon: 'info',
-    iconColor: 'text-primary',
+    iconColor: 'text-blue-400',
     confirmBtn: 'gradient-btn text-white',
-    headerAccent: 'border-primary/20 bg-primary/5',
+    accentBar: 'bg-blue-500',
   },
 };
 
@@ -111,29 +121,36 @@ export const ActionConfirmProvider = ({ children }: { children: ReactNode }) => 
           onClick={(e) => { if (e.target === e.currentTarget) closeModal(false); }}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
-          {/* Dialog */}
-          <div className="relative w-full max-w-sm rounded-2xl border border-outline-variant/20 bg-surface-container-lowest shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-            {/* Header */}
-            <div className={`px-6 pt-6 pb-5 border-b border-outline-variant/10 ${styles.headerAccent}`}>
-              <div className="flex items-start gap-3">
-                <span className={`material-symbols-outlined text-3xl shrink-0 mt-0.5 ${styles.iconColor}`}>
+          {/* Dialog — uses CSS variables so it respects light/dark theme properly */}
+          <div className="relative w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden bg-surface-container-lowest border border-outline-variant/20">
+
+            {/* Coloured top accent bar — replaces tinted header bg */}
+            <div className={`h-1 w-full ${styles.accentBar}`} />
+
+            {/* Body */}
+            <div className="px-6 pt-5 pb-6 bg-surface-container-low">
+              <div className="flex items-start gap-4">
+                <span className={`material-symbols-outlined text-[32px] shrink-0 mt-0.5 ${styles.iconColor}`}>
                   {styles.icon}
                 </span>
                 <div>
-                  <h2 className="text-lg font-extrabold text-on-surface leading-tight">{options.title}</h2>
-                  <p className="text-sm text-on-surface-variant mt-1.5 leading-relaxed">{options.message}</p>
+                  <h2 className="text-base font-extrabold text-on-surface leading-snug">{options.title}</h2>
+                  <p className="text-sm text-on-surface-variant mt-2 leading-relaxed">{options.message}</p>
                 </div>
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="px-6 py-4 flex items-center justify-end gap-3 bg-surface-container-low/50">
+            {/* Divider */}
+            <div className="h-px bg-outline-variant/20" />
+
+            {/* Footer actions */}
+            <div className="px-6 py-4 flex items-center justify-end gap-3 bg-surface-container">
               <button
                 type="button"
                 onClick={() => closeModal(false)}
-                className="px-5 py-2.5 rounded-xl text-sm font-bold bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors border border-outline-variant/20"
+                className="px-5 py-2.5 rounded-xl text-sm font-bold text-on-surface bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/25 transition-colors"
               >
                 {options.cancelLabel}
               </button>
