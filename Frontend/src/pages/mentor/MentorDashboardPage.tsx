@@ -251,56 +251,59 @@ const MentorDashboardPage = () => {
         </div>
       </div>
 
-      {/* Stats Row */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
-        <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-teal-500 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-teal-500 text-[24px]">event_note</span>
+      {/* Stats and Availability Manager Container */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+        {/* Vertical Stats Column */}
+        <section className="flex flex-col gap-4">
+          <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-teal-500 flex items-center gap-4 flex-1">
+            <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-teal-500 text-[24px]">event_note</span>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-on-surface">{totalSessionsCount}</p>
+              <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Total Sessions</p>
+            </div>
           </div>
-          <div>
-            <p className="text-2xl font-black text-on-surface">{totalSessionsCount}</p>
-            <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Total Sessions</p>
+          <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-amber-400 flex items-center gap-4 flex-1">
+            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-amber-500 text-[24px]">star</span>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-on-surface">{isNewMentor ? 'NEW' : mentorRating.toFixed(1)}</p>
+              <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Avg Rating</p>
+            </div>
           </div>
-        </div>
-        <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-amber-400 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-amber-500 text-[24px]">star</span>
-          </div>
-          <div>
-            <p className="text-2xl font-black text-on-surface">{isNewMentor ? 'NEW' : mentorRating.toFixed(1)}</p>
-            <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Avg Rating</p>
-          </div>
-        </div>
-        <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-orange-400 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-orange-400/10 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-orange-500 text-[24px]">pending_actions</span>
-          </div>
-          <div>
-            <p className={`text-2xl font-black ${pendingRequestsCount > 0 ? 'text-orange-500' : 'text-emerald-500'}`}>{pendingRequestsCount}</p>
-            <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Pending</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Availability Manager */}
-      {mentorId && (
-        <section className="mb-4">
-          <div className="bg-primary/5 p-6 rounded-2xl shadow-sm border border-primary/20">
-            <h2 className="text-xl font-bold text-primary mb-2 flex items-center gap-2">
-              <span className="material-symbols-outlined">event_available</span> Availability Manager
-            </h2>
-            <p className="text-sm text-on-surface-variant font-medium mb-4 leading-relaxed">
-              Manage your weekly availability from the dedicated page. Keep this dashboard focused on bookings and reviews.
-            </p>
-            <button
-              onClick={() => navigate('/mentor/availability')}
-              className="gradient-btn text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:shadow-md transition-all active:scale-95"
-            >
-              Open Availability Manager
-            </button>
+          <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-orange-400 flex items-center gap-4 flex-1">
+            <div className="w-12 h-12 rounded-xl bg-orange-400/10 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-orange-500 text-[24px]">pending_actions</span>
+            </div>
+            <div>
+              <p className={`text-2xl font-black ${pendingRequestsCount > 0 ? 'text-orange-500' : 'text-emerald-500'}`}>{pendingRequestsCount}</p>
+              <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Pending</p>
+            </div>
           </div>
         </section>
-      )}
+
+        {/* Availability Manager */}
+        {mentorId && (
+          <section className="lg:col-span-2 h-full">
+            <div className="bg-primary/5 p-8 rounded-2xl shadow-sm border border-primary/20 h-full flex flex-col justify-center items-start">
+              <h2 className="text-2xl font-bold text-primary mb-3 flex items-center gap-2">
+                <span className="material-symbols-outlined text-[28px]">event_available</span> Availability Manager
+              </h2>
+              <p className="text-base text-on-surface-variant font-medium mb-6 leading-relaxed max-w-lg">
+                Manage your weekly availability from the dedicated page. Keep this dashboard focused on bookings and reviews.
+              </p>
+              <button
+                onClick={() => navigate('/mentor/availability')}
+                className="gradient-btn text-white px-8 py-3.5 rounded-xl text-sm font-bold shadow-sm hover:shadow-md transition-all active:scale-95"
+              >
+                Open Availability Manager
+              </button>
+            </div>
+          </section>
+        )}
+      </div>
 
       {/* Upcoming Sessions */}
       <section className="mb-4">
