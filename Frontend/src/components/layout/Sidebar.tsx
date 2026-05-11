@@ -16,7 +16,7 @@ const Sidebar = ({ role }: SidebarProps) => {
   const { requestConfirmation } = useActionConfirm();
 
   const learnerNav = [
-    { name: 'Dashboard', icon: 'grid_view', path: '/learner' }, 
+    { name: 'Dashboard', icon: 'grid_view', path: '/learner' },
     { name: 'Mentor Search', icon: 'person_search', path: '/mentors' },
     { name: 'My Sessions', icon: 'event_upcoming', path: '/sessions' },
     { name: 'Groups', icon: 'groups', path: '/groups' },
@@ -44,8 +44,8 @@ const Sidebar = ({ role }: SidebarProps) => {
   const handleLogout = async () => {
     const confirmed = await requestConfirmation({
       title: 'Sign Out?',
-      message: 'Are you sure you want to log out of SkillSync? You will need to sign in again to access your account.',
-      confirmLabel: 'Yes, Sign Out',
+      message: 'Are you sure you want to log out of SkillSync? You will need to login again to access your account.',
+      confirmLabel: 'Yes, Log Out',
       cancelLabel: 'Stay',
       variant: 'warning',
     });
@@ -69,12 +69,11 @@ const Sidebar = ({ role }: SidebarProps) => {
         <div className="flex flex-1 items-center gap-1 lg:gap-2 py-2">
           {activeNav.map((item) => {
             const isActive = location.pathname === item.path;
-            const linkClasses = `flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-200 group ${
-              isActive 
-                ? 'bg-[var(--sidebar-active-bg)] text-[var(--sidebar-text)] shadow-sm font-extrabold' 
-                : 'text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] font-semibold'
-            }`;
- 
+            const linkClasses = `flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-200 group ${isActive
+              ? 'bg-[var(--sidebar-active-bg)] text-[var(--sidebar-text)] shadow-sm font-extrabold'
+              : 'text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] font-semibold'
+              }`;
+
             return (
               <Link key={item.name} to={item.path} className={linkClasses}>
                 <span className={`material-symbols-outlined text-[20px] transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
@@ -85,18 +84,18 @@ const Sidebar = ({ role }: SidebarProps) => {
             );
           })}
         </div>
- 
+
         {/* DIVIDER */}
         <div className="w-px h-8 bg-outline-variant/30 mx-4 shrink-0" />
- 
+
         {/* BOTTOM SECTION (Now on the right) */}
         <div className="flex items-center gap-1 lg:gap-2 shrink-0 py-2">
           <Link to="/help" className="flex items-center gap-2 px-4 py-2.5 rounded-full text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] transition-all duration-200 group">
             <span className="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">help</span>
             <span className="text-sm font-semibold whitespace-nowrap">Help Center</span>
           </Link>
-   
-          <button 
+
+          <button
             onClick={handleLogout}
             className="flex items-center gap-2 px-4 py-2.5 rounded-full text-[#ba1a1a] hover:bg-[#ba1a1a]/10 transition-all duration-200 group"
           >
