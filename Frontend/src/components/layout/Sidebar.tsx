@@ -93,16 +93,8 @@ const Sidebar = ({ role }: SidebarProps) => {
  
       {/* BOTTOM SECTION */}
       <div className="w-full shrink-0 p-2 lg:p-4 border-t border-[var(--sidebar-border)] flex flex-col gap-2">
-        {role === 'ROLE_LEARNER' && (
-          <button 
-            onClick={() => navigate('/mentors')}
-            className="w-full flex items-center justify-center h-12 bg-[#B5EAD7] text-[#191c1e] rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 font-bold"
-          >
-            <span className="material-symbols-outlined text-xl">search</span>
-            <span className="hidden lg:inline ml-2 text-sm whitespace-nowrap">Find a Mentor</span>
-          </button>
-        )}
  
+
         <Link to="/help" className="w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 h-12 rounded-xl text-[var(--sidebar-text-muted)] hover:bg-[var(--sidebar-active-bg)]/40 hover:text-[var(--sidebar-text)] transition-all duration-200 group">
           <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">help</span>
           <span className="hidden lg:inline ml-4 text-sm font-semibold whitespace-nowrap">Help Center</span>
