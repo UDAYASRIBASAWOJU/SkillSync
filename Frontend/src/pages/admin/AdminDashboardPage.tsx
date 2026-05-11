@@ -46,33 +46,33 @@ const AdminDashboardPage = () => {
       label: 'Total Users',
       value: stats?.totalUsers ?? 0,
       icon: 'group',
-      gradient: 'from-blue-500 to-cyan-400',
-      bg: 'bg-blue-50',
-      text: 'text-blue-700',
+      border: 'border-l-blue-500',
+      iconBg: 'bg-blue-500/10',
+      iconColor: 'text-blue-500',
     },
     {
       label: 'Approved Mentors',
       value: stats?.totalMentors ?? 0,
       icon: 'school',
-      gradient: 'from-violet-500 to-purple-400',
-      bg: 'bg-violet-50',
-      text: 'text-violet-700',
+      border: 'border-l-violet-500',
+      iconBg: 'bg-violet-500/10',
+      iconColor: 'text-violet-500',
     },
     {
       label: 'Total Sessions',
       value: stats?.totalSessions ?? 0,
       icon: 'event',
-      gradient: 'from-emerald-500 to-green-400',
-      bg: 'bg-emerald-50',
-      text: 'text-emerald-700',
+      border: 'border-l-emerald-500',
+      iconBg: 'bg-emerald-500/10',
+      iconColor: 'text-emerald-500',
     },
     {
       label: 'Pending Approvals',
       value: stats?.pendingMentorApprovals ?? 0,
       icon: 'pending_actions',
-      gradient: 'from-amber-500 to-orange-400',
-      bg: 'bg-amber-50',
-      text: 'text-amber-700',
+      border: 'border-l-amber-500',
+      iconBg: 'bg-amber-500/10',
+      iconColor: 'text-amber-500',
     },
   ];
 
@@ -127,16 +127,15 @@ const AdminDashboardPage = () => {
           {statCards.map((card) => (
             <div
               key={card.label}
-              className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/10 hover:shadow-md transition-all hover:-translate-y-0.5 relative overflow-hidden group"
+              className={`bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 ${card.border} border border-outline-variant/10 hover:shadow-md transition-all hover:-translate-y-0.5 flex items-center gap-4`}
             >
-              <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${card.gradient} opacity-10 rounded-full blur-xl -mr-6 -mt-6 group-hover:opacity-20 transition-opacity`}></div>
-              <div className="flex items-start justify-between mb-4">
-                <div className={`w-12 h-12 ${card.bg} rounded-xl flex items-center justify-center`}>
-                  <span className={`material-symbols-outlined text-[24px] ${card.text}`}>{card.icon}</span>
-                </div>
+              <div className={`w-12 h-12 ${card.iconBg} rounded-xl flex items-center justify-center shrink-0`}>
+                <span className={`material-symbols-outlined text-[24px] ${card.iconColor}`}>{card.icon}</span>
               </div>
-              <p className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">{card.label}</p>
-              <p className="text-3xl font-black text-on-surface">{card.value}</p>
+              <div>
+                <p className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-0.5">{card.label}</p>
+                <p className="text-3xl font-black text-on-surface">{card.value}</p>
+              </div>
             </div>
           ))}
         </div>

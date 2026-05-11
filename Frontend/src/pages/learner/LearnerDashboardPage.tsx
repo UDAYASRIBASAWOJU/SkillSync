@@ -344,14 +344,19 @@ const LearnerDashboardPage = () => {
         </div>
       )}
 
-      {/* Header Section */}
-      <section className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-        <div>
-          <h1 className="text-3xl font-extrabold text-on-surface tracking-tight">Welcome back, {user?.firstName}!</h1>
-          <p className="text-on-surface-variant font-medium mt-1">You're making great progress. Keep it up.</p>
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl -mr-24 -mt-24" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl -ml-10 -mb-10" />
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="material-symbols-outlined text-blue-200 text-xl">auto_awesome</span>
+            <span className="text-blue-200 text-xs font-bold uppercase tracking-widest">Learner Dashboard</span>
+          </div>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-1">Welcome back, {user?.firstName}! 👋</h1>
+          <p className="text-blue-100 text-base">You're making great progress. Keep it up.</p>
         </div>
-
-      </section>
+      </div>
 
       {/* Upcoming Sessions Section */}
       <section>

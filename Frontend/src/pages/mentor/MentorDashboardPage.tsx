@@ -230,36 +230,55 @@ const MentorDashboardPage = () => {
 
   return (
     <PageLayout rightPanel={rightPanel}>
-      <div className="mb-2 w-full flex justify-between items-end">
-        <div>
-          <h1 className="text-4xl font-extrabold text-on-surface tracking-tight mb-2">Mentor Dashboard</h1>
-          <p className="text-on-surface-variant text-lg">Manage requests, view your schedule, and set availability.</p>
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-r from-teal-600 via-emerald-600 to-cyan-600 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden mb-2">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl -mr-24 -mt-24" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full blur-2xl -ml-8 -mb-8" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="material-symbols-outlined text-teal-200 text-2xl">school</span>
+              <span className="text-teal-200 text-sm font-bold uppercase tracking-widest">Mentor Portal</span>
+            </div>
+            <h1 className="text-3xl font-extrabold tracking-tight mb-1">Mentor Dashboard</h1>
+            <p className="text-teal-100 text-base">Manage requests, view your schedule, and set availability.</p>
+          </div>
+          {mentorId && (
+            <button onClick={() => navigate(`/mentors/${mentorId}`)} className="shrink-0 flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur px-5 py-2.5 rounded-xl text-sm font-bold border border-white/20 transition-all">
+              View Public Profile <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+            </button>
+          )}
         </div>
-        {mentorId && (
-          <button onClick={() => navigate(`/mentors/${mentorId}`)} className="hidden md:flex items-center gap-2 bg-surface-container hover:bg-surface-container-high px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-colors border border-outline-variant/10 text-on-surface">
-            View Public Profile <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-          </button>
-        )}
       </div>
 
       {/* Stats Row */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-2">
-        <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/10 flex flex-col items-center justify-center text-center">
-          <span className="text-4xl font-black text-on-surface mb-1">{totalSessionsCount}</span>
-          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Total Sessions</span>
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
+        <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-teal-500 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-teal-500 text-[24px]">event_note</span>
+          </div>
+          <div>
+            <p className="text-2xl font-black text-on-surface">{totalSessionsCount}</p>
+            <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Total Sessions</p>
+          </div>
         </div>
-        <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/10 flex flex-col items-center justify-center text-center">
-          <span className="text-4xl font-black text-primary mb-1">
-            {isNewMentor ? 'NEW' : mentorRating.toFixed(1)}
-            {!isNewMentor && <span className="text-amber-500 text-3xl"> ★</span>}
-          </span>
-          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Average Rating</span>
+        <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-amber-400 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-amber-500 text-[24px]">star</span>
+          </div>
+          <div>
+            <p className="text-2xl font-black text-on-surface">{isNewMentor ? 'NEW' : mentorRating.toFixed(1)}</p>
+            <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Avg Rating</p>
+          </div>
         </div>
-        <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/10 flex flex-col items-center justify-center text-center">
-          <span className={`text-4xl font-black mb-1 ${pendingRequestsCount > 0 ? 'text-amber-500' : 'text-emerald-500'}`}>
-            {pendingRequestsCount}
-          </span>
-          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Pending Requests</span>
+        <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-orange-400 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-orange-400/10 flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-orange-500 text-[24px]">pending_actions</span>
+          </div>
+          <div>
+            <p className={`text-2xl font-black ${pendingRequestsCount > 0 ? 'text-orange-500' : 'text-emerald-500'}`}>{pendingRequestsCount}</p>
+            <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Pending</p>
+          </div>
         </div>
       </section>
 
