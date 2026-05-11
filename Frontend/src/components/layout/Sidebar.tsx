@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 import type { RootState } from '../../store';
 import api from '../../services/axios';
+import { useActionConfirm } from '../../components/ui/ActionConfirm';
 
 interface SidebarProps {
   role: 'ROLE_LEARNER' | 'ROLE_MENTOR' | 'ROLE_ADMIN';
@@ -13,6 +14,7 @@ const Sidebar = ({ role }: SidebarProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const sidebarOpen = useSelector((state: RootState) => state.ui.sidebarOpen);
+  const { requestConfirmation } = useActionConfirm();
 
   const learnerNav = [
     { name: 'Dashboard', icon: 'grid_view', path: '/learner' }, 
@@ -41,10 +43,19 @@ const Sidebar = ({ role }: SidebarProps) => {
   const activeNav = role === 'ROLE_MENTOR' ? mentorNav : role === 'ROLE_ADMIN' ? adminNav : learnerNav;
 
   const handleLogout = async () => {
+    const confirmed = await requestConfirmation({
+      title: 'Sign Out?',
+      message: 'Are you sure you want to log out of SkillSync? You will need to sign in again to access your account.',
+      confirmLabel: 'Yes, Sign Out',
+      cancelLabel: 'Stay',
+      variant: 'warning',
+    });
+    if (!confirmed) return;
+
     try {
       await api.post('/api/auth/logout');
     } catch (e) {
-      console.warn("Logout request failed cleanly", e);
+      console.warn('Logout request failed cleanly', e);
     } finally {
       dispatch(logout());
       localStorage.clear();

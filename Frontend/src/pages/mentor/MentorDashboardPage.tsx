@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import PageLayout from '../../components/layout/PageLayout';
 import api from '../../services/axios';
 import { useToast } from '../../components/ui/Toast';
+import { useActionConfirm } from '../../components/ui/ActionConfirm';
 import { formatDateTimeIST } from '../../utils/dateTime';
 
 const MentorDashboardPage = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const { requestConfirmation } = useActionConfirm();
 
   // For Inline Reject Confirm
   const [rejectingId, setRejectingId] = useState<number | null>(null);
@@ -80,6 +82,34 @@ const MentorDashboardPage = () => {
     if (!name) return 'U';
     const p = name.split(' ');
     return p.length > 1 ? `${p[0][0]}${p[1][0]}`.toUpperCase() : p[0][0].toUpperCase();
+  };
+
+  const handleAccept = async (req: any) => {
+    const name = getSessionDisplayName(req);
+    const time = getSessionDateTimeLabel(req);
+    const confirmed = await requestConfirmation({
+      title: 'Accept Session Request?',
+      message: `Are you sure you want to accept the session request from ${name} scheduled on ${time}? Once accepted, the learner will be notified and the session will appear in your upcoming schedule.`,
+      confirmLabel: 'Yes, Accept',
+      cancelLabel: 'Not Now',
+      variant: 'success',
+    });
+    if (!confirmed) return;
+    acceptMutation.mutate(req.id);
+  };
+
+  const handleReject = async (req: any) => {
+    const name = getSessionDisplayName(req);
+    const time = getSessionDateTimeLabel(req);
+    const confirmed = await requestConfirmation({
+      title: 'Reject Session Request?',
+      message: `Are you sure you want to reject the session request from ${name} on ${time}? The learner will be notified and a refund will be initiated automatically.`,
+      confirmLabel: 'Yes, Reject',
+      cancelLabel: 'Keep Request',
+      variant: 'danger',
+    });
+    if (!confirmed) return;
+    rejectMutation.mutate(req.id);
   };
 
   const allMentorSessions = mentorSessionsObj?.content || [];
@@ -164,25 +194,19 @@ const MentorDashboardPage = () => {
                     <p className="text-xs text-on-surface-variant mt-0.5">{getSessionDateTimeLabel(req)}</p>
                   </div>
                 </div>
-                {rejectingId === req.id ? (
-                  <div className="flex items-center gap-2 bg-error/10 p-2 rounded-lg">
-                    <span className="text-xs font-bold text-error mr-1">Confirm?</span>
-                    <button onClick={() => rejectMutation.mutate(req.id)} disabled={rejectMutation.isPending} className="text-xs font-bold bg-error text-white px-3 py-1 rounded-md hover:bg-error/90 transition-colors">Yes</button>
-                    <button onClick={() => setRejectingId(null)} className="text-xs font-bold text-on-surface-variant hover:text-on-surface px-2 py-1">No</button>
-                  </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setRejectingId(req.id)}
-                      className="flex-1 bg-surface-container hover:bg-surface-container-high text-on-surface px-3 py-1.5 rounded-lg text-xs font-bold border border-outline-variant/10 transition-colors"
-                    >Reject</button>
-                    <button
-                      onClick={() => acceptMutation.mutate(req.id)}
-                      disabled={acceptMutation.isPending}
-                      className="flex-1 gradient-btn text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all active:scale-95 disabled:opacity-50"
-                    >Accept</button>
-                  </div>
-                )}
+                {/* Accept / Reject buttons — confirm dialog via handler */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => void handleReject(req)}
+                    disabled={rejectMutation.isPending}
+                    className="flex-1 bg-surface-container hover:bg-surface-container-high text-on-surface px-3 py-1.5 rounded-lg text-xs font-bold border border-outline-variant/10 transition-colors disabled:opacity-50"
+                  >Reject</button>
+                  <button
+                    onClick={() => void handleAccept(req)}
+                    disabled={acceptMutation.isPending}
+                    className="flex-1 gradient-btn text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all active:scale-95 disabled:opacity-50"
+                  >Accept</button>
+                </div>
               </div>
             ))}
           </div>

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import mentorService from '../../services/mentorService';
 import PageLayout from '../../components/layout/PageLayout';
 import { useToast } from '../../components/ui/Toast';
+import { useActionConfirm } from '../../components/ui/ActionConfirm';
 import api from '../../services/axios';
 import { formatClockTime } from '../../utils/dateTime';
 
@@ -20,6 +21,7 @@ const MentorDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { showToast } = useToast();
+  const { requestConfirmation } = useActionConfirm();
 
   const [selectedSlot, setSelectedSlot] = useState<any>(null);
   const [selectedDurationMinutes, setSelectedDurationMinutes] = useState<number>(60);
@@ -202,6 +204,20 @@ const MentorDetailPage = () => {
       showToast({ message: 'Payment gateway is still loading. Please wait a moment and try again.', type: 'error' });
       return;
     }
+
+    // Confirm before initiating payment
+    const slotLabel = selectedSlot
+      ? `${weekdayNames[selectedSlot.dayOfWeek]}, ${formatClockTime(String(selectedSlot.startTime))} – ${formatClockTime(String(selectedSlot.endTime))} IST`
+      : 'selected slot';
+    const cost = ((Number(m.hourlyRate || 0) * selectedDurationMinutes) / 60).toFixed(0);
+    const confirmed = await requestConfirmation({
+      title: 'Confirm Booking & Payment?',
+      message: `You are about to book a ${selectedDurationMinutes}-minute session with ${mentorName} on ${slotLabel}. The payment of ₹${cost} will be processed securely via Razorpay. Do you want to continue?`,
+      confirmLabel: `Pay ₹${cost}`,
+      cancelLabel: 'Go Back',
+      variant: 'info',
+    });
+    if (!confirmed) return;
 
     // Build a session date from the selectedDateStr + slot time
     const sessionDate = new Date(selectedDateStr);

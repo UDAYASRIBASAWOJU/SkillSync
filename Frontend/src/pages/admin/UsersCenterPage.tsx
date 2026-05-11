@@ -115,15 +115,37 @@ const UsersCenterPage = () => {
   const handleDeleteUser = async (id: number, email: string) => {
     const confirmed = await requestConfirmation({
       title: 'Delete User?',
-      message: `Are you sure you want to delete user ${email}? This action cannot be undone.`,
-      confirmLabel: 'Yes, delete user',
+      message: `Are you sure you want to permanently delete ${email}? This action cannot be undone and will remove all their data from the platform.`,
+      confirmLabel: 'Yes, Delete User',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
     });
-
-    if (!confirmed) {
-      return;
-    }
-
+    if (!confirmed) return;
     deleteMutation.mutate(id);
+  };
+
+  const handlePromoteUser = async (id: number, name: string) => {
+    const confirmed = await requestConfirmation({
+      title: 'Promote to Mentor?',
+      message: `Are you sure you want to promote ${name} to Mentor? They will gain access to mentor-specific features including availability management, session earnings, and learner bookings.`,
+      confirmLabel: 'Yes, Promote',
+      cancelLabel: 'Cancel',
+      variant: 'info',
+    });
+    if (!confirmed) return;
+    roleMutation.mutate({ id, role: 'ROLE_MENTOR' });
+  };
+
+  const handleDemoteUser = async (id: number, name: string) => {
+    const confirmed = await requestConfirmation({
+      title: 'Demote to Learner?',
+      message: `Are you sure you want to demote ${name} back to Learner? They will lose all mentor privileges, and their availability slots will no longer be visible to learners.`,
+      confirmLabel: 'Yes, Demote',
+      cancelLabel: 'Cancel',
+      variant: 'warning',
+    });
+    if (!confirmed) return;
+    roleMutation.mutate({ id, role: 'ROLE_LEARNER' });
   };
 
   const getRoleBadgeStyle = (role: string) => {
@@ -238,7 +260,7 @@ const UsersCenterPage = () => {
                         <div className="flex gap-2 justify-end">
                           {user.role === 'ROLE_LEARNER' && (
                             <button
-                              onClick={() => roleMutation.mutate({ id: user.id, role: 'ROLE_MENTOR' })}
+                              onClick={() => void handlePromoteUser(user.id, `${user.firstName} ${user.lastName}`.trim() || user.email)}
                               disabled={roleMutation.isPending}
                               className="text-[10px] font-bold bg-purple-100 text-purple-700 hover:bg-purple-200 px-3 py-1.5 rounded-lg transition disabled:opacity-50"
                             >
@@ -247,7 +269,7 @@ const UsersCenterPage = () => {
                           )}
                           {user.role === 'ROLE_MENTOR' && (
                             <button
-                              onClick={() => roleMutation.mutate({ id: user.id, role: 'ROLE_LEARNER' })}
+                              onClick={() => void handleDemoteUser(user.id, `${user.firstName} ${user.lastName}`.trim() || user.email)}
                               disabled={roleMutation.isPending}
                               className="text-[10px] font-bold bg-orange-100 text-orange-700 hover:bg-orange-200 px-3 py-1.5 rounded-lg transition disabled:opacity-50"
                             >
