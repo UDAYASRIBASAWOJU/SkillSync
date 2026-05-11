@@ -157,6 +157,40 @@ const LearnerDashboardPage = () => {
 
   const rightPanel = (
     <>
+      {/* My Groups */}
+      <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+        <h3 className="font-bold text-lg text-on-surface mb-4">My Groups</h3>
+        {groups.length === 0 ? (
+          <div className="flex flex-col items-center py-6 text-center">
+            <span className="material-symbols-outlined text-4xl text-outline-variant mb-2">group_add</span>
+            <p className="text-sm font-semibold text-on-surface-variant mb-4">No active groups yet</p>
+            <Link to="/groups" className="text-primary border border-primary hover:bg-primary/5 font-bold px-6 py-2 rounded-xl transition-all text-sm">
+              Find a Group
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {groups.map((g: any, i: number) => (
+              <div key={i} className="flex justify-between items-center text-sm font-semibold p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+                <span>{g.name}</span>
+                <span className="text-on-surface-variant text-xs">{g.memberCount || 1} members</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+        <h3 className="font-bold text-lg text-on-surface mb-4">Practice Links</h3>
+        <div className="space-y-2 text-sm font-semibold">
+          <a href="https://leetcode.com" target="_blank" rel="noreferrer" className="block text-primary hover:underline">LeetCode</a>
+          <a href="https://www.hackerrank.com" target="_blank" rel="noreferrer" className="block text-primary hover:underline">HackerRank</a>
+          <a href="https://www.geeksforgeeks.org" target="_blank" rel="noreferrer" className="block text-primary hover:underline">GeeksforGeeks</a>
+          <a href="https://www.codechef.com" target="_blank" rel="noreferrer" className="block text-primary hover:underline">CodeChef</a>
+        </div>
+      </div>
+
+      {/* Apply As Mentor */}
       <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
         <h3 className="font-bold text-lg text-on-surface mb-2">Apply As Mentor</h3>
         {mentorApplied ? (
@@ -194,39 +228,6 @@ const LearnerDashboardPage = () => {
           </>
         )}
       </div>
-
-      <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
-        <h3 className="font-bold text-lg text-on-surface mb-4">Practice Links</h3>
-        <div className="space-y-2 text-sm font-semibold">
-          <a href="https://leetcode.com" target="_blank" rel="noreferrer" className="block text-primary hover:underline">LeetCode</a>
-          <a href="https://www.hackerrank.com" target="_blank" rel="noreferrer" className="block text-primary hover:underline">HackerRank</a>
-          <a href="https://www.geeksforgeeks.org" target="_blank" rel="noreferrer" className="block text-primary hover:underline">GeeksforGeeks</a>
-          <a href="https://www.codechef.com" target="_blank" rel="noreferrer" className="block text-primary hover:underline">CodeChef</a>
-        </div>
-      </div>
-
-      <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
-        <h3 className="font-bold text-lg text-on-surface mb-4">My Groups</h3>
-        {groups.length === 0 ? (
-          <div className="flex flex-col items-center py-6 text-center">
-            <span className="material-symbols-outlined text-4xl text-outline-variant mb-2">group_add</span>
-            <p className="text-sm font-semibold text-on-surface-variant mb-4">No active groups yet</p>
-            <Link to="/groups" className="text-primary border border-primary hover:bg-primary/5 font-bold px-6 py-2 rounded-xl transition-all text-sm">
-              Find a Group
-            </Link>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {groups.map((g: any, i: number) => (
-              <div key={i} className="flex justify-between items-center text-sm font-semibold p-2 rounded-lg hover:bg-surface-container-low transition-colors">
-                <span>{g.name}</span>
-                <span className="text-on-surface-variant text-xs">{g.memberCount || 1} members</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
 
     </>
   );

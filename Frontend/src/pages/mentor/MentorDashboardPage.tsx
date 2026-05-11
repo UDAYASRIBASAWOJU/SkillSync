@@ -133,6 +133,62 @@ const MentorDashboardPage = () => {
 
   const rightPanel = (
     <>
+      {/* Manage Groups */}
+      <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+        <h3 className="font-bold text-lg text-on-surface mb-2 flex items-center gap-2">
+          <span className="material-symbols-outlined">groups</span> Manage Groups
+        </h3>
+        <p className="text-xs text-on-surface-variant font-medium mb-4 leading-relaxed">
+          Explore groups and join communities. Joined groups let you message and moderate learner messages.
+        </p>
+        <button
+          onClick={() => navigate('/groups')}
+          className="w-full bg-primary text-on-primary px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:bg-primary-dark transition-colors"
+        >
+          Open Group Hub
+        </button>
+      </div>
+
+      {/* Action Required — Pending Requests */}
+      {pendingRequests.length > 0 && (
+        <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-amber-500/20">
+          <div className="flex items-center gap-3 mb-4">
+            <h3 className="font-bold text-lg text-on-surface">Action Required</h3>
+            <span className="bg-error text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              {pendingRequestsCount} Pending
+            </span>
+          </div>
+          <div className="space-y-3">
+            {pendingRequests.map((req: any) => (
+              <div key={req.id} className="flex flex-col gap-3 p-3 bg-surface-container rounded-xl border border-outline-variant/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                    {getInitials(getSessionDisplayName(req))}
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-on-surface leading-tight">{getSessionDisplayName(req)}</p>
+                    <p className="text-xs text-on-surface-variant mt-0.5">{getSessionDateTimeLabel(req)}</p>
+                  </div>
+                </div>
+                {/* Accept / Reject buttons — confirm dialog via handler */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => void handleReject(req)}
+                    disabled={rejectMutation.isPending}
+                    className="flex-1 bg-surface-container-high hover:bg-surface-container-highest text-on-surface px-3 py-1.5 rounded-lg text-xs font-bold border border-outline-variant/30 transition-colors disabled:opacity-50"
+                  >Reject</button>
+                  <button
+                    onClick={() => void handleAccept(req)}
+                    disabled={acceptMutation.isPending}
+                    className="flex-1 gradient-btn text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all active:scale-95 disabled:opacity-50"
+                  >Accept</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Recent Reviews */}
       <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
         <h3 className="font-bold text-lg text-on-surface mb-4">Recent Reviews</h3>
@@ -169,60 +225,6 @@ const MentorDashboardPage = () => {
         )}
       </div>
 
-      {/* Action Required — Pending Requests */}
-      {pendingRequests.length > 0 && (
-        <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-amber-500/20">
-          <div className="flex items-center gap-3 mb-4">
-            <h3 className="font-bold text-lg text-on-surface">Action Required</h3>
-            <span className="bg-error text-white text-xs font-bold px-2 py-0.5 rounded-full">
-              {pendingRequestsCount} Pending
-            </span>
-          </div>
-          <div className="space-y-3">
-            {pendingRequests.map((req: any) => (
-              <div key={req.id} className="flex flex-col gap-3 p-3 bg-amber-50/60 rounded-xl border border-amber-200/40">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                    {getInitials(getSessionDisplayName(req))}
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm text-on-surface leading-tight">{getSessionDisplayName(req)}</p>
-                    <p className="text-xs text-on-surface-variant mt-0.5">{getSessionDateTimeLabel(req)}</p>
-                  </div>
-                </div>
-                {/* Accept / Reject buttons — confirm dialog via handler */}
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => void handleReject(req)}
-                    disabled={rejectMutation.isPending}
-                    className="flex-1 bg-surface-container hover:bg-surface-container-high text-on-surface px-3 py-1.5 rounded-lg text-xs font-bold border border-outline-variant/10 transition-colors disabled:opacity-50"
-                  >Reject</button>
-                  <button
-                    onClick={() => void handleAccept(req)}
-                    disabled={acceptMutation.isPending}
-                    className="flex-1 gradient-btn text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all active:scale-95 disabled:opacity-50"
-                  >Accept</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/15">
-        <h3 className="font-bold text-lg text-on-surface mb-2 flex items-center gap-2">
-          <span className="material-symbols-outlined">groups</span> Manage Groups
-        </h3>
-        <p className="text-xs text-on-surface-variant font-medium mb-4 leading-relaxed">
-          Explore groups and join communities. Joined groups let you message and moderate learner messages.
-        </p>
-        <button
-          onClick={() => navigate('/groups')}
-          className="w-full bg-primary text-on-primary px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:bg-primary-dark transition-colors"
-        >
-          Open Group Hub
-        </button>
-      </div>
     </>
   );
 
