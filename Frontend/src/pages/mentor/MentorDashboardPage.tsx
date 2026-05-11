@@ -255,15 +255,6 @@ const MentorDashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
         {/* Vertical Stats Column */}
         <section className="flex flex-col gap-4">
-          <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-teal-500 flex items-center gap-4 flex-1">
-            <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-teal-500 text-[24px]">event_note</span>
-            </div>
-            <div>
-              <p className="text-2xl font-black text-on-surface">{totalSessionsCount}</p>
-              <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Total Sessions</p>
-            </div>
-          </div>
           <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-amber-400 flex items-center gap-4 flex-1">
             <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-amber-500 text-[24px]">star</span>
@@ -271,6 +262,15 @@ const MentorDashboardPage = () => {
             <div>
               <p className="text-2xl font-black text-on-surface">{isNewMentor ? 'NEW' : mentorRating.toFixed(1)}</p>
               <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Avg Rating</p>
+            </div>
+          </div>
+          <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-teal-500 flex items-center gap-4 flex-1">
+            <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-teal-500 text-[24px]">event_note</span>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-on-surface">{totalSessionsCount}</p>
+              <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Total Sessions</p>
             </div>
           </div>
           <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border-l-4 border-orange-400 flex items-center gap-4 flex-1">
@@ -292,7 +292,7 @@ const MentorDashboardPage = () => {
                 <span className="material-symbols-outlined text-[28px]">event_available</span> Availability Manager
               </h2>
               <p className="text-base text-on-surface-variant font-medium mb-6 leading-relaxed max-w-lg">
-                Manage your weekly availability from the dedicated page. Keep this dashboard focused on bookings and reviews.
+                Manage your weekly schedule.
               </p>
               <button
                 onClick={() => navigate('/mentor/availability')}
